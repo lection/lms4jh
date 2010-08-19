@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	     xmlns:aop="http://www.springframework.org/schema/aop"
+	     xmlns:tx="http://www.springframework.org/schema/tx"
+	     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+    <!-- DataSource -->       
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+    	<property name="driverClass" value="com.mysql.jdbc.Driver"/>
+		<property name="jdbcUrl" value="jdbc:mysql://localhost/lms"/>
+		<property name="user" value="root"/>
+		<property name="password" value="root"/>
+		<property name="maxPoolSize" value="15"/>
+		<property name="minPoolSize" value="2"/>
+		<property name="initialPoolSize" value="2"/>
+		<property name="maxIdleTime" value="100"/>
+    </bean>
+    
+    <!-- Dao -->
+    <bean id="managerDao" class="lms.dao.impl.ManagerDaoMysqlImpl" autowire="byName"/>
+</beans>

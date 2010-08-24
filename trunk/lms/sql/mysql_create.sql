@@ -24,6 +24,8 @@ create table t_manager(
 	c_ext_int int,
 	c_ext_str varchar(50)
 );
+
+insert into t_manager values(null,'admin','admin','admin',null,null,null);
 ----------------
 --
 --

@@ -36,21 +36,42 @@ public class ManagerDaoTest{
 		m1.setPassword("test_password");
 		m1.setName("good");
 		m1.setExt_String("junit_test");
-		managerDao.save(m1);
-		Manager m2 = managerDao.loadManager(m1.getLoginName());
-		assert m2.getLoginName().equals(m1.getLoginName());
+		try {
+			managerDao.save(m1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		Manager m2 = null;
+		try {
+			m2 = managerDao.loadManager(m1.getLoginName());
+		} catch (SQLException e) {
+		}
+		assert !m2.getLoginName().equals(m1.getLoginName());
 		assert m2.getPassword().equals(m1.getPassword());
-		managerDao.deleteByLoginName(m1.getLoginName());
-		Manager m3 = managerDao.loadManager(m1.getLoginName());
+		try {
+			managerDao.deleteByLoginName(m1.getLoginName());
+		} catch (SQLException e) {
+		}
+		Manager m3 = null;
+		try {
+			m3 = managerDao.loadManager(m1.getLoginName());
+		} catch (SQLException e) {
+		}
 		assert m3 == null;
+	}
+	
+	@Test
+	public void test2(){
+		
 	}
 
 	@After
 	public void setDown(){
 		Connection conn = null;
 		Statement stat = null;
+		DataSource dataSource = (DataSource)context.getBean("dataSource");
 		try {
-			conn = ((DataSource)context.getBean("dataSource")).getConnection();
+			conn = dataSource.getConnection();
 			stat = conn.createStatement();
 			stat.executeUpdate("delete from t_manager where c_ext_str='junit_test'");
 		} catch (Exception e) {
@@ -61,6 +82,7 @@ public class ManagerDaoTest{
 					stat.close();
 				if(conn != null)
 					conn.close();
+				((com.mchange.v2.c3p0.ComboPooledDataSource)dataSource).close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

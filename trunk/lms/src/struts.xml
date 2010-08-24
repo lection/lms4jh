@@ -4,8 +4,11 @@
 	"http://struts.apache.org/dtds/struts-2.1.dtd">
 <struts>
 	<package name="main" extends="struts-default">
-
-		<action name="test" class="lms.action.TestAction"> 
+		<action name="manager_*" class="lms.action.ManagerAction" method="manager_{1}">
+			<result name="login">/WEB-INF/pages/manager/login.jsp</result>
+			<result name="welcome">/WEB-INF/pages/manager/welcome.jsp</result>			
+		</action>
+		<action name="test" class="lms.action.TestAction">
 			<result>/test.html</result>
 		</action>
 	</package> 

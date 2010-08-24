@@ -1,0 +1,21 @@
+html,body,*{
+	margin: 0px;
+	padding: 0px;
+}
+#manager div{
+	padding: 15px;
+	margin: 10px;
+}
+#manager_left{
+	border:1px solid silver;
+	width:200px;
+	float: left;
+}
+#manager_left ul{
+	list-style-type: none;
+}
+#manager_content{
+	border:1px solid silver;
+	width:600px;
+	float:left;
+}

@@ -25,9 +25,7 @@ public class ManagerDaoMysqlImpl extends JdbcDaoSupport implements IManagerDao {
 				manager.setContact(rs.getString("c_contact"));
 				manager.setExt_int(rs.getInt("c_ext_int"));
 				manager.setExt_String(rs.getString("c_ext_str"));
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+			} catch (SQLException e) {}
 			return manager;
 		}};
 		
@@ -64,20 +62,21 @@ public class ManagerDaoMysqlImpl extends JdbcDaoSupport implements IManagerDao {
 
 	@Override
 	public void update(Manager manager) {
-		// TODO Auto-generated method stub
-
+		Object[] arr1 = getManagerAtrrs(manager);
+		Object[] arr2 = new Object[arr1.length];
+		System.arraycopy(arr1, 1, arr2, 0, arr1.length-1);
+		getJdbcTemplate().update("update t_manager set c_login_name=?,c_password=?,c_name=?,c_contact=?,c_ext_int=?,c_ext_str=?" +
+				" where c_id=?", arr2);
 	}
 
 	@Override
 	public void changePassword(String loginName, String password) {
-		// TODO Auto-generated method stub
-
+		getJdbcTemplate().update("update t_manager set c_password=? where c_login_name=?", new Object[]{password,loginName});
 	}
 
 	@Override
 	public void changePassword(int id, String password) {
-		// TODO Auto-generated method stub
-
+		getJdbcTemplate().update("update t_manager set c_password=? where c_id=?", new Object[]{password,id});
 	}
 
 	@Override
@@ -92,8 +91,7 @@ public class ManagerDaoMysqlImpl extends JdbcDaoSupport implements IManagerDao {
 
 	@Override
 	public List<Manager> listManager() {
-		// TODO Auto-generated method stub
-		return null;
+		return getJdbcTemplate().query("select * from t_manager", rowMapper);
 	}
 
 	@Override

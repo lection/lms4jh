@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <decorators defaultdir="/WEB-INF/face">
     <decorator name="manager" page="manager.jsp">
-          <pattern>/manager_*</pattern>
+          <pattern>/manager*</pattern>
+          <pattern>/type*</pattern>
     </decorator>
 </decorators>

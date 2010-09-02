@@ -7,8 +7,9 @@
 <title>管理后台登录</title>
 </head>
 <body>
+<s:actionerror/>
+<s:actionmessage/>
 <form action="manager_auth.action" method="post">
-	<s:actionerror/>
 	<table>
 		<tbody>
 			<tr>

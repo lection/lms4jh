@@ -15,9 +15,10 @@
 <div id="manager">
 	<div id="manager_left">
 		<ul>
+			<li><a href="manager_manager.action">管理员维护</a></li>
+			<li><a href="type_manager.action">分类维护</a></li>
 			<li>目录</li>
-			<li>目录</li>
-			<li>目录</li>
+			<li><a href="manager_logout.action">注销</a></li>
 		</ul>
 	</div>
 	<div id="manager_content">

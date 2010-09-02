@@ -6,7 +6,17 @@
 	<package name="main" extends="struts-default">
 		<action name="manager_*" class="lms.action.ManagerAction" method="manager_{1}">
 			<result name="login">/WEB-INF/pages/manager/login.jsp</result>
-			<result name="welcome">/WEB-INF/pages/manager/welcome.jsp</result>			
+			<result name="welcome">/WEB-INF/pages/manager/welcome.jsp</result>
+			<result name="manager">/WEB-INF/pages/manager/manager.jsp</result>
+			<result name="editmanager">/WEB-INF/pages/manager/manager_editmanager.jsp</result>
+		</action>
+		<action name="type_*" class="lms.action.TypeAction" method="type_{1}">
+			<result name="manager">/WEB-INF/pages/manager/type.jsp</result>
+			<result name="add">/WEB-INF/pages/manager/type_add.jsp</result>
+			<result name="edit">/WEB-INF/pages/manager/type_edit.jsp</result>
+		</action>
+		<action name="manager-page_*">
+			<result>/WEB-INF/pages/manager/manager_{1}.jsp</result>
 		</action>
 		<action name="test" class="lms.action.TestAction">
 			<result>/test.html</result>

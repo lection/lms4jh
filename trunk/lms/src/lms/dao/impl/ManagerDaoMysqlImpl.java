@@ -2,6 +2,8 @@ package lms.dao.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import lms.dao.IManagerDao;
@@ -25,7 +27,10 @@ public class ManagerDaoMysqlImpl extends JdbcDaoSupport implements IManagerDao {
 				manager.setContact(rs.getString("c_contact"));
 				manager.setExt_int(rs.getInt("c_ext_int"));
 				manager.setExt_String(rs.getString("c_ext_str"));
-			} catch (SQLException e) {}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				manager = null;
+			}
 			return manager;
 		}};
 		
@@ -65,6 +70,7 @@ public class ManagerDaoMysqlImpl extends JdbcDaoSupport implements IManagerDao {
 		Object[] arr1 = getManagerAtrrs(manager);
 		Object[] arr2 = new Object[arr1.length];
 		System.arraycopy(arr1, 1, arr2, 0, arr1.length-1);
+		arr2[arr1.length-1]=arr1[0];
 		getJdbcTemplate().update("update t_manager set c_login_name=?,c_password=?,c_name=?,c_contact=?,c_ext_int=?,c_ext_str=?" +
 				" where c_id=?", arr2);
 	}
@@ -96,12 +102,17 @@ public class ManagerDaoMysqlImpl extends JdbcDaoSupport implements IManagerDao {
 
 	@Override
 	public Manager loadManager(int id) {
-		return (Manager)getJdbcTemplate().query("select * from t_manager where c_id=?", new Object[]{id}, rsExtracotr);
+		return (Manager)getJdbcTemplate().queryForObject("select * from t_manager where c_id=?", new Object[]{id}, rowMapper);
 	}
 
 	@Override
 	public Manager loadManager(String loginName) {
-		return (Manager)getJdbcTemplate().query("select * from t_manager where c_login_name=?", new Object[]{loginName}, rsExtracotr);
+//		return (Manager)getJdbcTemplate().query("select * from t_manager where c_login_name=?", new Object[]{loginName}, rsExtracotr);
+		try{
+			return (Manager)getJdbcTemplate().queryForObject("select * from t_manager where c_login_name=?", new Object[]{loginName}, rowMapper);
+		}catch(Exception ex){
+			return null;
+		}
 	}
 
 }

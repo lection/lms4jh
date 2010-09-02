@@ -1,6 +1,8 @@
 package lms.action;
 
-import java.sql.SQLException;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
 
 import lms.dao.IManagerDao;
 import lms.model.Manager;
@@ -16,22 +18,68 @@ public class ManagerAction extends ActionSupport{
 	
 	
 	public String manager_login(){
-		System.out.println(managerDao);
+//		System.out.println(managerDao);
 		return "login";
+	}
+	
+	public String manager_logout(){
+		HttpSession session = ServletActionContext.getRequest().getSession(false);
+		if(session != null){
+			session.invalidate();
+		}
+		addActionMessage("退出图书管理系统");
+		return manager_login();
 	}
 	
 	public String manager_auth(){
 		Manager m = null;
-		try {
-			m = managerDao.loadManager(manager.getLoginName());
-		} catch (SQLException e) {}
+		System.out.println(manager.getLoginName());
+		m = managerDao.loadManager(manager.getLoginName());
 		if( m == null || !manager.getPassword().equals(m.getPassword())){
-			addActionError("loginError");
+			System.out.println(m);
+			addActionError("用户名或密码错误");
 			return manager_login();
 		}
 		manager = m;
 		ServletActionContext.getRequest().getSession().setAttribute("manager", manager);
 		return "welcome";
+	}
+	
+	public String manager_manager(){
+		List<Manager> list = managerDao.listManager();
+		ServletActionContext.getRequest().setAttribute("managerList", list);
+		return "manager";
+	}
+	
+	public String manager_addManager(){
+		managerDao.save(manager);
+		addActionMessage("用户 "+manager.getLoginName()+" 添加成功");
+		return manager_manager();
+	}
+	
+	public String manager_deleteMgr(){
+		System.out.println(manager.getId());
+		manager = managerDao.loadManager(manager.getId());
+		managerDao.deleteById(manager.getId());
+		addActionMessage(manager.getLoginName()+" "+manager.getName()+" 用户删除成功");
+		return manager_manager();
+	}
+	
+	public String manager_editmanager(){
+		manager = managerDao.loadManager(manager.getId());
+		return "editmanager";
+	}
+	
+	public String manager_updateMgr(){
+		Manager m_update = managerDao.loadManager(manager.getId());
+		m_update.setName(manager.getName());
+		m_update.setContact(manager.getContact());
+		if(manager.getPassword()!=null){
+			m_update.setPassword(manager.getPassword());
+		}
+		managerDao.update(m_update);
+		addActionMessage(manager.getLoginName()+" 用户修改成功");
+		return manager_manager();
 	}
 
 	public Manager getManager() {

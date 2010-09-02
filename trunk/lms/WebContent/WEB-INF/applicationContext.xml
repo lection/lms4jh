@@ -20,4 +20,5 @@
     
     <!-- Dao -->
     <bean id="managerDao" class="lms.dao.impl.ManagerDaoMysqlImpl" autowire="byName"/>
+    <bean id="typeDao" class="lms.dao.impl.TypeDaoMysqlImpl" autowire="byName"/>
 </beans>

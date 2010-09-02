@@ -1,9 +1,13 @@
 package test.dao;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -32,37 +36,40 @@ public class ManagerDaoTest{
 	@Test
 	public void test1(){
 		Manager m1 = new Manager();
-		m1.setLoginName("test");
+		m1.setLoginName("test_123");
 		m1.setPassword("test_password");
 		m1.setName("good");
 		m1.setExt_String("junit_test");
-		try {
-			managerDao.save(m1);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		managerDao.save(m1);
 		Manager m2 = null;
-		try {
-			m2 = managerDao.loadManager(m1.getLoginName());
-		} catch (SQLException e) {
-		}
-		assert !m2.getLoginName().equals(m1.getLoginName());
-		assert m2.getPassword().equals(m1.getPassword());
-		try {
-			managerDao.deleteByLoginName(m1.getLoginName());
-		} catch (SQLException e) {
-		}
+		m2 = managerDao.loadManager(m1.getLoginName());
+		
+		assertEquals(m2.getLoginName(), m1.getLoginName());
+		assertEquals(m2.getPassword(), m1.getPassword());
+		
+		m2.setPassword("123");
+		managerDao.update(m2);
+		m2 = managerDao.loadManager(m2.getId());
+		assertEquals("123",m2.getPassword());
+		
+		managerDao.deleteByLoginName(m1.getLoginName());
 		Manager m3 = null;
-		try {
-			m3 = managerDao.loadManager(m1.getLoginName());
-		} catch (SQLException e) {
-		}
-		assert m3 == null;
+		m3 = managerDao.loadManager(m1.getLoginName());
+		assertNull(m3);
 	}
 	
 	@Test
 	public void test2(){
-		
+		List<Manager> managerList = managerDao.listManager();
+		int size = managerList.size();
+		Manager m1 = new Manager();
+		m1.setLoginName("test3");
+		m1.setPassword("test_password");
+		m1.setExt_String("junit_test");
+		managerDao.save(m1);
+		assertEquals(size+1, managerDao.listManager().size());
+		managerDao.deleteByLoginName(m1.getLoginName());
+		assertEquals(size, managerDao.listManager().size());
 	}
 
 	@After

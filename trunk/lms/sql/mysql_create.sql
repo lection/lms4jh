@@ -25,7 +25,14 @@ create table t_manager(
 	c_ext_str varchar(50)
 );
 
+create table t_type(
+	c_id int primary key auto_increment,
+	c_name varchar(10) not null unique,
+	c_desc text
+);
+
 insert into t_manager values(null,'admin','admin','admin',null,null,null);
+insert into t_type values(null,'默认分类','默认分类');
 ----------------
 --
 --

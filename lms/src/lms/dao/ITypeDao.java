@@ -11,6 +11,7 @@ public interface ITypeDao {
 	Type loadType(int id);
 	Type loadType(String name);
 	List<Type> listType();
+	List<Type> listType(int bookId);
 	//U
 	void update(Type type);
 	//D

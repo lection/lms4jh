@@ -18,7 +18,7 @@ public class ManagerAction extends ActionSupport{
 	
 	
 	public String manager_login(){
-//		System.out.println(managerDao);
+		
 		return "login";
 	}
 	

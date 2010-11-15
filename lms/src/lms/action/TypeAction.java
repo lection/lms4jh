@@ -8,6 +8,7 @@ import org.apache.struts2.ServletActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class TypeAction extends ActionSupport{
+	private static final long serialVersionUID = -6429856638056806694L;
 	private ITypeDao typeDao;
 	private Type type;
 	

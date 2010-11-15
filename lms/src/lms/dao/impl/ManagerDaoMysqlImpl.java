@@ -2,37 +2,34 @@ package lms.dao.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import lms.dao.IManagerDao;
 import lms.model.Manager;
 
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 
 public class ManagerDaoMysqlImpl extends JdbcDaoSupport implements IManagerDao {
-	private ResultSetExtractor rsExtracotr = new ResultSetExtractor(){
-		@Override
-		public Object extractData(ResultSet rs) {
-			Manager manager = null;
-			try {
-				manager = new Manager();
-				manager.setId(rs.getInt("c_id"));
-				manager.setLoginName(rs.getString("c_login_name"));
-				manager.setPassword(rs.getString("c_password"));
-				manager.setName(rs.getString("c_name"));
-				manager.setContact(rs.getString("c_contact"));
-				manager.setExt_int(rs.getInt("c_ext_int"));
-				manager.setExt_String(rs.getString("c_ext_str"));
-			} catch (SQLException e) {
-				e.printStackTrace();
-				manager = null;
-			}
-			return manager;
-		}};
+//	private ResultSetExtractor rsExtracotr = new ResultSetExtractor(){
+//		@Override
+//		public Object extractData(ResultSet rs) {
+//			Manager manager = null;
+//			try {
+//				manager = new Manager();
+//				manager.setId(rs.getInt("c_id"));
+//				manager.setLoginName(rs.getString("c_login_name"));
+//				manager.setPassword(rs.getString("c_password"));
+//				manager.setName(rs.getString("c_name"));
+//				manager.setContact(rs.getString("c_contact"));
+//				manager.setExt_int(rs.getInt("c_ext_int"));
+//				manager.setExt_String(rs.getString("c_ext_str"));
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//				manager = null;
+//			}
+//			return manager;
+//		}};
 		
 	private RowMapper rowMapper = new RowMapper(){
 		@Override
@@ -95,6 +92,7 @@ public class ManagerDaoMysqlImpl extends JdbcDaoSupport implements IManagerDao {
 		getJdbcTemplate().update("delete from t_manager where c_id=?", new Object[]{id});
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Manager> listManager() {
 		return getJdbcTemplate().query("select * from t_manager", rowMapper);

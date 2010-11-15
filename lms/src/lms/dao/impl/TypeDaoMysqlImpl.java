@@ -2,6 +2,7 @@ package lms.dao.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
@@ -32,6 +33,7 @@ public class TypeDaoMysqlImpl extends JdbcDaoSupport implements ITypeDao {
 		getJdbcTemplate().update("delete from t_type where c_name=?", new Object[]{name});
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Type> listType() {
 		return getJdbcTemplate().query("select c_id,c_name,c_desc from t_type",rowMapper);
@@ -67,4 +69,16 @@ public class TypeDaoMysqlImpl extends JdbcDaoSupport implements ITypeDao {
 				new Object[]{type.getName(),type.getDesc(),type.getId()});
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Type> listType(int bookId) {
+		try{
+			return getJdbcTemplate().query(
+					"select t.c_id,t.c_name,t.c_desc from t_type as t,t_book_type as bt where bt.c_book_id=? and bt.c_type_id=t.c_id"
+					,new Object[]{bookId} ,rowMapper);
+		}catch(Exception ex){
+			return Collections.EMPTY_LIST;
+		}
+	}
+ 
 }

@@ -29,7 +29,7 @@ public class TypeDaoTest{
 	@Test
 	public void test1(){
 		Type t1 = new Type();
-		List list1 = typeDao.listType();
+		List<Type> list1 = typeDao.listType();
 		t1.setName("test1");
 		t1.setDesc("hahahahaha");
 		typeDao.save(t1);

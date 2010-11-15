@@ -3,7 +3,7 @@
 	"-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
 	"http://struts.apache.org/dtds/struts-2.1.dtd">
 <struts>
-	<package name="main" extends="struts-default">
+	<package name="manager" extends="struts-default">
 		<action name="manager_*" class="lms.action.ManagerAction" method="manager_{1}">
 			<result name="login">/WEB-INF/pages/manager/login.jsp</result>
 			<result name="welcome">/WEB-INF/pages/manager/welcome.jsp</result>
@@ -15,6 +15,15 @@
 			<result name="add">/WEB-INF/pages/manager/type_add.jsp</result>
 			<result name="edit">/WEB-INF/pages/manager/type_edit.jsp</result>
 		</action>
+		<action name="book_*" class="lms.action.BookManagerAction" method="book_{1}">
+			<result name="manager">/WEB-INF/pages/manager/book_manager.jsp</result>
+			<result name="add">/WEB-INF/pages/manager/addBook.jsp</result>
+			<result name="book">/WEB-INF/pages/manager/book.jsp</result>
+		</action>
+		<action name="bookfile_*" class="lms.action.BookFileAction" method="{1}">
+			<result type="chain">book_add</result>
+		</action>
+		<!--jsp直接访问action-->
 		<action name="manager-page_*">
 			<result>/WEB-INF/pages/manager/manager_{1}.jsp</result>
 		</action>
@@ -22,4 +31,27 @@
 			<result>/test.html</result>
 		</action>
 	</package> 
+	<package name="book" extends="struts-default">
+		<global-results>
+			<result name="fileNotFound">/404.jsp</result>
+		</global-results>
+		<global-exception-mappings>
+			<exception-mapping result="fileNotFound" exception="java.io.FileNotFoundException"></exception-mapping>
+			<exception-mapping result="fileNotFound" exception="java.lang.Exception"></exception-mapping>
+		</global-exception-mappings>
+		<action name="view" class="lms.action.ViewBookAction">
+			<result type="stream">
+				<param name="contentType">application/x-shockwave-flash</param>
+				<param name="inputName">paper</param>
+				<param name="contentDisposition">filename="paper.swf"</param>
+			</result>
+		</action>
+		<action name="download" class="downLoadAction">
+			<result type="stream">
+				<param name="contentType">application/download</param>
+				<param name="inputName">stream</param>
+				<param name="contentDisposition">filename="${fileName}"</param>
+			</result>
+		</action>
+	</package>
 </struts>

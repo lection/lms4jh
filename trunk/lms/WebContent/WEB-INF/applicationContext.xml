@@ -5,7 +5,7 @@
 	     xmlns:tx="http://www.springframework.org/schema/tx"
 	     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
-           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
+           http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd" default-autowire="byName">
     <!-- DataSource -->       
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
     	<property name="driverClass" value="com.mysql.jdbc.Driver"/>
@@ -17,8 +17,16 @@
 		<property name="initialPoolSize" value="2"/>
 		<property name="maxIdleTime" value="100"/>
     </bean>
-    
+    <!--Action-->
+	<bean id="downLoadAction" class="lms.action.DownloadBookAction" >
+		<property name="fileDir">
+			<value>E:\ebook\it</value>
+		</property>
+	</bean>
     <!-- Dao -->
-    <bean id="managerDao" class="lms.dao.impl.ManagerDaoMysqlImpl" autowire="byName"/>
-    <bean id="typeDao" class="lms.dao.impl.TypeDaoMysqlImpl" autowire="byName"/>
+    <bean id="managerDao" class="lms.dao.impl.ManagerDaoMysqlImpl"/>
+    <bean id="typeDao" class="lms.dao.impl.TypeDaoMysqlImpl"/>
+    <bean id="bookDao" class="lms.dao.impl.BookDaoMysqlImpl"/>
+	<!--Book HiloUtil-->
+	<bean id="hiloUtil" class="util.HiloUtil"/>
 </beans>

@@ -33,7 +33,7 @@
 			</tr>
 			<tr>
 				<td><input type="submit" value="添加"/></td>
-				<td><input type="submit" value="重置"/></td>
+				<td><input type="reset" value="重置"/></td>
 			</tr>
 		</tbody>
 		<tfoot></tfoot>

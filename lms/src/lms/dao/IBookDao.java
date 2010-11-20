@@ -17,9 +17,12 @@ public interface IBookDao {
 	void deleteByIdCol(Collection<Integer> ids) throws SQLException;
 	//U
 	void update(Book book) throws SQLException;
-	//R 复杂的查询暂略
+	//R 
 	int getTotal();
 	Book getBookById(int id);
-	List<Book> listBook(int start,int end);
-	List<Book> listBook(int start,int end,Type type);
+	List<Book> listBook(int start,int size);
+	int getTotal(Type type);
+	List<Book> listBook(int start,int size,Type type);
+	int getTotal(String name,String author,String code,String bookConcern,Integer typeId);
+	List<Book> listBook(String name,String author,String code,String bookConcern,Integer typeId,int start,int size);
 }

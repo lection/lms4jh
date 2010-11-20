@@ -17,16 +17,38 @@
 		<property name="initialPoolSize" value="2"/>
 		<property name="maxIdleTime" value="100"/>
     </bean>
-    <!--Action-->
+    <!--Action
 	<bean id="downLoadAction" class="lms.action.DownloadBookAction" >
 		<property name="fileDir">
 			<value>E:\ebook\it</value>
 		</property>
 	</bean>
+	<bean id="viewBookAction" class="lms.action.ViewBookAction" >
+		<property name="fileDir">
+			<value>E:\ebook\it</value>
+		</property>
+	</bean>-->
     <!-- Dao -->
     <bean id="managerDao" class="lms.dao.impl.ManagerDaoMysqlImpl"/>
     <bean id="typeDao" class="lms.dao.impl.TypeDaoMysqlImpl"/>
     <bean id="bookDao" class="lms.dao.impl.BookDaoMysqlImpl"/>
+    <!-- Service -->
+    <bean id="bookUploadService" class="lms.service.impl.BookUploadServiceImpl">
+    	<property name="bookDir">
+    		<value>E:\test\book</value>
+    	</property>
+    	<property name="imgDir">
+    		<value>E:\test\image</value>
+    	</property>
+    	<property name="swfDir">
+    		<value>E:\test\swf</value>
+    	</property>
+    </bean>
 	<!--Book HiloUtil-->
 	<bean id="hiloUtil" class="util.HiloUtil"/>
+	<bean id="conver" class="util.TypeConver4WinPdf">
+		<property name="common">
+			<value>D:\Program Files\SWFTools\pdf2swf.exe</value>
+		</property>
+	</bean>
 </beans>

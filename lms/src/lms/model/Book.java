@@ -23,6 +23,7 @@ public class Book {
 	private int downLoadCount;
 	private int statue;
 	private String fileName;
+	private String swf;
 	private String coverImg;
 	private Date createdDate;
 	private String createdBy;
@@ -133,6 +134,14 @@ public class Book {
 		this.coverImg = coverImg;
 	}
 	
+	public String getSwf() {
+		return swf;
+	}
+
+	public void setSwf(String swf) {
+		this.swf = swf;
+	}
+
 	public String toString(){
 		return ReflectionToStringBuilder.toString(this);
 	}

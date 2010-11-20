@@ -7,12 +7,14 @@ import javax.servlet.http.HttpSession;
 import lms.dao.IManagerDao;
 import lms.model.Manager;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ManagerAction extends ActionSupport{
 	private static final long serialVersionUID = 7692682388105922418L;
+	public static final String LOGIN_FLAG = "LMS_MANAGER_LOGIN";
 	private IManagerDao managerDao;
 	private Manager manager;
 	
@@ -33,15 +35,15 @@ public class ManagerAction extends ActionSupport{
 	
 	public String manager_auth(){
 		Manager m = null;
-		System.out.println(manager.getLoginName());
+//		System.out.println(manager.getLoginName());
 		m = managerDao.loadManager(manager.getLoginName());
 		if( m == null || !manager.getPassword().equals(m.getPassword())){
-			System.out.println(m);
+//			System.out.println(m);
 			addActionError("用户名或密码错误");
 			return manager_login();
 		}
 		manager = m;
-		ServletActionContext.getRequest().getSession().setAttribute("manager", manager);
+		ServletActionContext.getRequest().getSession().setAttribute(LOGIN_FLAG, manager);
 		return "welcome";
 	}
 	
@@ -74,7 +76,7 @@ public class ManagerAction extends ActionSupport{
 		Manager m_update = managerDao.loadManager(manager.getId());
 		m_update.setName(manager.getName());
 		m_update.setContact(manager.getContact());
-		if(manager.getPassword()!=null){
+		if(!StringUtils.isBlank(manager.getPassword())){
 			m_update.setPassword(manager.getPassword());
 		}
 		managerDao.update(m_update);

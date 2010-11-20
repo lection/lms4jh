@@ -28,6 +28,7 @@
 			if(!book_name_val||$.trim(book_name_val).length==0){
 				var input_file_name = $(this).val();
 				book_name.val(input_file_name.substring(input_file_name.lastIndexOf("\\"),input_file_name.lastIndexOf(".")));
+				book_name.change();
 			}
 		});
 		$("#add_book_form").submit(function(){
@@ -42,7 +43,23 @@
 				return false;
 			}
 		});
+		$("#book_name").change(fn_pinyin);
 	});
+	function fn_pinyin(){
+		var param = {s:$(this).val()};
+		$.getJSON("pinyin.jsp",param,function(data){
+			$("#pinyin").val(data.pinyin);
+			$("#py").val(data.py);
+		});
+	}
+	function fn_can_edit(id){
+		var input=$("#"+id);
+		if(input.attr("readonly")){
+			input.removeAttr("readonly");
+		}else{
+			input.attr("readonly","readonly");
+		}
+	}
 </SCRIPT>
 </head>
 <body>
@@ -73,6 +90,16 @@
 			<tr>
 				<td>出版日期</td>
 				<td><input id="datepicker" name="date" type="text" size="25"/></td>
+			</tr>
+			<tr>
+				<td>拼音</td>
+				<td><input id="pinyin" name="book.fullPinYin" type="text" readonly="readonly" size="15"/>
+				<label><input type="checkbox" onClick="fn_can_edit('pinyin')"/>修改</label></td>
+			</tr>
+			<tr>
+				<td>拼音缩写</td>
+				<td><input id="py" readonly="readonly" name="book.pinYin" type="text" size="10"/>
+				<label><input type="checkbox" onClick="fn_can_edit('py')"/>修改</label></td>
 			</tr>
 			<tr>
 				<td>是否允许下载</td>

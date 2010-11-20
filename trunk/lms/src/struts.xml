@@ -3,6 +3,17 @@
 	"-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
 	"http://struts.apache.org/dtds/struts-2.1.dtd">
 <struts>
+<constant name= "struts.multipart.maxSize" value="524288000" />
+	<package name="action" extends="struts-default">
+		<default-action-ref name="lms"></default-action-ref>
+		<action name="lms" class="lms.action.LmsAction">
+			<result>/WEB-INF/pages/action/index.jsp</result>
+		</action>
+		<action name="lms_*" class="lms.action.LmsAction" method="{1}">
+			<result name="div">/WEB-INF/pages/action/index_div.jsp</result>
+		</action>
+	</package>
+	
 	<package name="manager" extends="struts-default"><interceptors>
 		<interceptor name="loginInterceptor"
 			 class="lms.filter.ManagerLoginInterceptor">

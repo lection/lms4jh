@@ -19,7 +19,7 @@ public class BookManagerAction extends ActionSupport{
 	private Book book;
 	private List<Type> types;
 	private LmsPage page;
-	private int bookManagerPageSize = 2;
+	private int bookManagerPageSize = 10;
 	private Integer typeId;
 	private int pageNum = 1;
 	

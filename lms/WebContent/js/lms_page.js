@@ -9,6 +9,8 @@ var lmsPageUtil = {
 				alert("使用lms分页有异常，未设置url");return;
 			}
 			this.param[this.pageName]=page;
-			$("#"+this.contentId).load(this.url,this.param);
+			var content_div = $("#"+this.contentId);
+			content_div.html("<img src='images/wait.gif'/>");
+			content_div.load(this.url,this.param);
 		}
 };

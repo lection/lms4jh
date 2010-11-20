@@ -3,10 +3,28 @@
 	"-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
 	"http://struts.apache.org/dtds/struts-2.1.dtd">
 <struts>
-	<package name="manager" extends="struts-default">
-		<action name="manager_*" class="lms.action.ManagerAction" method="manager_{1}">
+	<package name="manager" extends="struts-default"><interceptors>
+		<interceptor name="loginInterceptor"
+			 class="lms.filter.ManagerLoginInterceptor">
+			</interceptor>
+			<interceptor-stack name="lmsInterceptorStack">
+				<interceptor-ref name="loginInterceptor">
+				</interceptor-ref>
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="lmsInterceptorStack">
+		</default-interceptor-ref>
+		
+		<global-results>
 			<result name="login">/WEB-INF/pages/manager/login.jsp</result>
+			<result name="input">/input.jsp</result>
+		</global-results>
+		<action name="manager_auth" class="lms.action.ManagerAction" method="manager_auth">
+			<interceptor-ref name="defaultStack"></interceptor-ref>
 			<result name="welcome">/WEB-INF/pages/manager/welcome.jsp</result>
+		</action>
+		<action name="manager_*" class="lms.action.ManagerAction" method="manager_{1}">
 			<result name="manager">/WEB-INF/pages/manager/manager.jsp</result>
 			<result name="editmanager">/WEB-INF/pages/manager/manager_editmanager.jsp</result>
 		</action>
@@ -17,11 +35,17 @@
 		</action>
 		<action name="book_*" class="lms.action.BookManagerAction" method="book_{1}">
 			<result name="manager">/WEB-INF/pages/manager/book_manager.jsp</result>
+			<result name="list_div">/WEB-INF/pages/manager/book_manager_div.jsp</result>
 			<result name="add">/WEB-INF/pages/manager/addBook.jsp</result>
 			<result name="book">/WEB-INF/pages/manager/book.jsp</result>
 		</action>
+		<!-- 下划线开头，防止sitemesh进行包装 -->
+		<action name="_book_*" class="lms.action.BookManagerAction" method="book_{1}">
+			<result name="list_div">/WEB-INF/pages/manager/book_manager_div.jsp</result>
+		</action>
 		<action name="bookfile_*" class="lms.action.BookFileAction" method="{1}">
 			<result type="chain">book_add</result>
+			<result name="input">/WEB-INF/pages/manager/addBook.jsp</result>
 		</action>
 		<!--jsp直接访问action-->
 		<action name="manager-page_*">
@@ -39,14 +63,17 @@
 			<exception-mapping result="fileNotFound" exception="java.io.FileNotFoundException"></exception-mapping>
 			<exception-mapping result="fileNotFound" exception="java.lang.Exception"></exception-mapping>
 		</global-exception-mappings>
-		<action name="view" class="lms.action.ViewBookAction">
+		<action name="viewSWF" class="lms.action.ViewBookAction">
 			<result type="stream">
 				<param name="contentType">application/x-shockwave-flash</param>
 				<param name="inputName">paper</param>
 				<param name="contentDisposition">filename="paper.swf"</param>
 			</result>
 		</action>
-		<action name="download" class="downLoadAction">
+		<action name="view" class="lms.action.ViewBookAction" method="toView">
+			<result name="view">/viewer.jsp</result>
+		</action>
+		<action name="download" class="lms.action.DownloadBookAction">
 			<result type="stream">
 				<param name="contentType">application/download</param>
 				<param name="inputName">stream</param>

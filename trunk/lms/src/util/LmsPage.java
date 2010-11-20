@@ -17,7 +17,7 @@ public class LmsPage {
 		this.total = total;
 		
 		start = (page - 1)*pageSize;
-		pageTotal = total/pageSize + total%pageSize==0?0:1;
+		pageTotal = total/pageSize + (total%pageSize==0?0:1);
 	}
 	
 	public int getTotal() {

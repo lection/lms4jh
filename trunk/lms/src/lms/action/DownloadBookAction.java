@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 
 import lms.dao.IBookDao;
 import lms.model.Book;
+import lms.service.IBookUploadService;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -18,12 +19,15 @@ public class DownloadBookAction extends ActionSupport {
 	private Book book;
 	private String fileName;
 	private IBookDao bookDao;
+	private IBookUploadService bookUploadService;
 	
 	public String execute() throws FileNotFoundException,UnsupportedEncodingException{
 		book = bookDao.getBookById(book.getId());
 		if(book.getStatue() == Book.CAN_DOWNLOAD){
-			stream = 
-				new FileInputStream(new File(fileDir,book.getFileName()));
+//			stream = 
+//				new FileInputStream(new File(fileDir,book.getFileName()));
+			
+			stream = bookUploadService.downloadBook(book.getFileName());
 			fileName = book.getName()+book.getFileName().substring(
 					book.getFileName().lastIndexOf('.'));
 			fileName = new String(fileName.getBytes(),"ISO-8859-1");
@@ -51,5 +55,9 @@ public class DownloadBookAction extends ActionSupport {
 
 	public void setFileDir(String fileDir) {
 		this.fileDir = fileDir;
+	}
+
+	public void setBookUploadService(IBookUploadService bookUploadService) {
+		this.bookUploadService = bookUploadService;
 	}
 }

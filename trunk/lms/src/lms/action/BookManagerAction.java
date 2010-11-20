@@ -19,13 +19,54 @@ public class BookManagerAction extends ActionSupport{
 	private Book book;
 	private List<Type> types;
 	private LmsPage page;
-	private int bookManagerPageSize = 10;
+	private int bookManagerPageSize = 2;
+	private Integer typeId;
+	private int pageNum = 1;
 	
 	public String book_manager(){
-		types = typeDao.listType();
-		page = new LmsPage(1,bookManagerPageSize,bookDao.getTotal());
-		page.setContent(bookDao.listBook(page.getStart(), page.getPageSize()));
+//		types = typeDao.listType();
+//		page = new LmsPage(1,bookManagerPageSize,bookDao.getTotal());
+//		page.setContent(bookDao.listBook(page.getStart(), page.getPageSize()));
+		listBook(1);
 		return "manager";
+	}
+	
+	private void listBook(int pageNum){
+		types = typeDao.listType();
+		page = new LmsPage(pageNum,bookManagerPageSize,bookDao.getTotal());
+		page.setContent(bookDao.listBook(page.getStart(), page.getPageSize()));
+	}
+	
+	public String book_list(){
+		listBook(pageNum);
+		return "list_div";
+	}
+	
+	public String book_find(){
+		types = typeDao.listType();
+		try{
+			int total = 0;
+			List<Book> list = null;
+			if(book != null){
+				total=bookDao.getTotal(book.getName(), book.getAuthor(), book.getCode(), book.getBookConcern(), typeId);
+				page = new LmsPage(pageNum,bookManagerPageSize,total);
+				list = bookDao.listBook(book.getName(), book.getAuthor(), book.getCode(), book.getBookConcern(), typeId, page.getStart(), page.getPageSize()); 
+			}else if(typeId != null){
+				Type type = new Type();
+				type.setId(typeId);
+				total = bookDao.getTotal(type);
+				page = new LmsPage(pageNum,bookManagerPageSize,total);
+				list = bookDao.listBook(page.getStart(),page.getPageSize(), type);
+			}else{
+				total=bookDao.getTotal();
+				page = new LmsPage(pageNum,bookManagerPageSize,total);
+				list = bookDao.listBook(page.getStart(), page.getPageSize());
+			}
+			page.setContent(list);
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return "list_div";
 	}
 	
 	public String book_add(){
@@ -68,5 +109,20 @@ public class BookManagerAction extends ActionSupport{
 
 	public LmsPage getPage() {
 		return page;
+	}
+
+	public Integer getTypeId() {
+		return typeId;
+	}
+
+	public void setTypeId(Integer typeId) {
+		if
+			(typeId<1)this.typeId=null;
+		else
+			this.typeId = typeId;
+	}
+
+	public void setPageNum(int pageNum) {
+		this.pageNum = pageNum;
 	}
 }

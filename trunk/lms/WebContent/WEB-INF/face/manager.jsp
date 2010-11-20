@@ -7,6 +7,9 @@
 <head>
 <title><d:title default="管理后台"/></title>
 <link  rel="stylesheet" href="css/manager.css"/>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/jquery-ui.js"></script>
+<link  rel="stylesheet" href="css/jquery_css/custom.css"/>
 <d:head/>
 </head>
 <body>

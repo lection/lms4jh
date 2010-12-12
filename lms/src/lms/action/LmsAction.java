@@ -13,7 +13,7 @@ public class LmsAction {
 	private List<Type> listType;
 	private LmsPage page;
 	private int pageNum=1;
-	private int pageSize = 10;
+	private int pageSize = 2;
 	private int typeId;
 	
 	public String execute(){

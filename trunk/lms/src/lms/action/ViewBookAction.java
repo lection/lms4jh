@@ -5,8 +5,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import org.apache.struts2.ServletActionContext;
+
+import util.LogUtil;
+
 import lms.dao.IBookDao;
 import lms.model.Book;
+import lms.model.LmsUser;
 import lms.service.IBookUploadService;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -24,8 +29,13 @@ public class ViewBookAction extends ActionSupport {
 //		paper = new FileInputStream(
 //			new File(fileDir,book.getFileName()+".swf"));
 //		System.out.println(book.getSwf());
-		paper = bookUploadService.viewSWF(book.getSwf());
-		return SUCCESS;
+		if(ServletActionContext.getRequest().getSession().getAttribute(LmsUser.LOGIN_FLAG) != null){
+			paper = bookUploadService.viewSWF(book.getSwf());
+			LogUtil.userLog("阅读图书《"+book.getName()+"》");
+			return SUCCESS;
+		}else{
+			return "fileNotFound";
+		}
 	}
 	
 	public String toView(){

@@ -4,6 +4,7 @@ import java.util.List;
 
 import lms.dao.IBookDao;
 import lms.dao.ITypeDao;
+import lms.model.Book;
 import lms.model.Type;
 import util.LmsPage;
 
@@ -13,8 +14,9 @@ public class LmsAction {
 	private List<Type> listType;
 	private LmsPage page;
 	private int pageNum=1;
-	private int pageSize = 2;
-	private int typeId;
+	private int pageSize = 12;
+	private Integer typeId;
+	private Book book;
 	
 	public String execute(){
 		listType = typeDao.listType();
@@ -24,9 +26,34 @@ public class LmsAction {
 	}
 	
 	public String listBook(){
-//		listType = typeDao.listType();
 		page = new LmsPage(pageNum,pageSize,bookDao.getTotal());
 		page.setContent(bookDao.listBook(page.getStart(), page.getPageSize()));
+		return "div";
+	}
+	
+	public String findBook(){
+		try{
+			int total = 0;
+			List<Book> list = null;
+			if(book != null){
+				total=bookDao.getTotal(book.getName(), book.getAuthor(), book.getCode(), book.getBookConcern(),book.getDesc(), typeId);
+				page = new LmsPage(pageNum,pageSize,total);
+				list = bookDao.listBook(book.getName(), book.getAuthor(), book.getCode(), book.getBookConcern(),book.getDesc(), typeId, page.getStart(), page.getPageSize()); 
+			}else if(typeId != null){
+				Type type = new Type();
+				type.setId(typeId);
+				total = bookDao.getTotal(type);
+				page = new LmsPage(pageNum,pageSize,total);
+				list = bookDao.listBook(page.getStart(),page.getPageSize(), type);
+			}else{
+				total=bookDao.getTotal();
+				page = new LmsPage(pageNum,pageSize,total);
+				list = bookDao.listBook(page.getStart(), page.getPageSize());
+			}
+			page.setContent(list);
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
 		return "div";
 	}
 	
@@ -62,7 +89,19 @@ public class LmsAction {
 		this.pageSize = pageSize;
 	}
 
-	public void setTypeId(int typeId) {
+	public Integer getTypeId() {
+		return typeId;
+	}
+
+	public void setTypeId(Integer typeId) {
 		this.typeId = typeId;
+	}
+
+	public Book getBook() {
+		return book;
+	}
+
+	public void setBook(Book book) {
+		this.book = book;
 	}
 }

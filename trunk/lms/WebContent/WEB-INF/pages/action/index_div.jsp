@@ -8,7 +8,13 @@
       			<td width="23%">书名</td>
       			<td width="22%">作者</td>
       			<td width="30%">出版社</td>
-      			<td colspan="2">操作</td>
+      			<s:if test="isLogin">
+      				<td 
+      				<s:if test="#lmsUser.role!=@lms.model.LmsUser@SCHOOLFELLOW">
+      				colspan="2"
+      				</s:if>
+      				>操作</td>
+      			</s:if>
       		</tr>
       	</thead>
         <TBODY>
@@ -17,16 +23,20 @@
         		<td><s:property value="#b.name"/></td>
         		<td><s:property value="#b.author"/></td>
         		<td><s:property value="#b.bookConcern"/></td>
+        		<s:if test="isLogin">
+        		<s:if test="#lmsUser.role!=@lms.model.LmsUser@SCHOOLFELLOW">
         		<td>
         			<s:if test="#b.fileName!=null&&#b.statue==@lms.model.Book@CAN_DOWNLOAD">
 						<a href="download.action?book.id=<s:property value="#b.id"/>" target="_blank">下载</a>
 					</s:if>
 				</td>
+				</s:if>
 				<td>
 					<s:if test="#b.swf!=null">
 						<a href="view.action?book.id=<s:property value="#b.id"/>" target="_blank">浏览</a>
 					</s:if>
         		</td>
+        		</s:if>
         	</tr>	
        	</s:iterator>
         </TBODY>

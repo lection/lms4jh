@@ -6,11 +6,14 @@ import java.util.Arrays;
 import java.util.Date;
 
 import lms.model.Book;
+import lms.model.LmsUser;
 import lms.model.Manager;
 import lms.model.Type;
 import lms.service.IBookUploadService;
 
 import org.apache.struts2.ServletActionContext;
+
+import util.LogUtil;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -37,11 +40,12 @@ public class BookFileAction extends ActionSupport{
 		book.setTypes(new ArrayList<Type>(Arrays.asList(types)));
 		book.setBookDate(date);
 		book.setCreatedDate(new Date());
-		book.setCreatedBy(((Manager)ServletActionContext.getRequest().getSession().getAttribute(ManagerAction.LOGIN_FLAG)).getLoginName());
+		book.setCreatedBy(((Manager)ServletActionContext.getRequest().getSession().getAttribute(LmsUser.LOGIN_FLAG)).getLoginName());
 		try {
 			bookUploadService.uploadBook(book, bookFile, bookFileFileName
 					, swf, coverImg, coverImgFileName, types);
 			addActionMessage("图书 "+book.getName()+" 成功添加");
+			LogUtil.userLog("添加图书"+book.getName());
 		} catch (Exception e) {
 //			e.printStackTrace();
 			addActionMessage(e.getMessage());

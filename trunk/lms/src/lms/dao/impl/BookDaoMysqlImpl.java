@@ -23,7 +23,7 @@ import util.DSQLUtil.WhereUtil;
 public class BookDaoMysqlImpl extends JdbcDaoSupport implements IBookDao{
 	
 	private static final String BOOK_COLUMN
-		= "c_id,c_name,c_author,c_code,c_book_concern,c_py,c_fpy,c_fileName" +
+		= "c_id,c_name,c_author,c_translator,c_pages,c_code,c_book_concern,c_py,c_fpy,c_fileName" +
 			",c_read_count,c_download_count,c_state,c_book_date,c_cover_img,c_swf,c_desc,c_created_date,c_created_by";
 	
 	private RowMapper rowMapper = new RowMapper(){
@@ -33,6 +33,8 @@ public class BookDaoMysqlImpl extends JdbcDaoSupport implements IBookDao{
 			book.setId(rs.getInt("c_id"));
 			book.setName(rs.getString("c_name"));
 			book.setAuthor(rs.getString("c_author"));
+			book.setTranslator(rs.getString("c_translator"));
+			book.setPages(rs.getInt("c_pages"));
 			book.setCode(rs.getString("c_code"));
 			book.setBookConcern(rs.getString("c_book_concern"));
 			book.setPinYin(rs.getString("c_py"));
@@ -52,7 +54,7 @@ public class BookDaoMysqlImpl extends JdbcDaoSupport implements IBookDao{
 	};
 	
 	private static final String[] columnNames = {
-		"b.c_name","b.c_author","b.c_code","b.c_book_concern","bt.c_type_id"
+		"b.c_name","b.c_author","b.c_code","b.c_book_concern","b.c_desc","bt.c_type_id"
 	};
 	private DSQLUtil totalSQLUtil = new DSQLUtil(
 			"select count(b.c_id) from t_book as b,t_book_type as bt"
@@ -60,6 +62,14 @@ public class BookDaoMysqlImpl extends JdbcDaoSupport implements IBookDao{
 	private DSQLUtil listBookUtil = new DSQLUtil(
 			"select distinct b.* from t_book as b,t_book_type as bt"+DSQLUtil.SQL_SPLIT+" and b.c_id=bt.c_book_id"
 			,columnNames);
+	
+	private static final String[] columnNamesWithOutType = {
+		"b.c_name","b.c_author","b.c_code","b.c_book_concern","b.c_desc"
+	};
+	private DSQLUtil totalSQLUtilWithOutType = new DSQLUtil(
+			"select count(b.c_id) from t_book as b"+DSQLUtil.SQL_SPLIT,columnNamesWithOutType);
+	private DSQLUtil listBookUtilWithOutType = new DSQLUtil(
+			"select distinct b.* from t_book as b"+DSQLUtil.SQL_SPLIT,columnNamesWithOutType);
 	
 	private ITypeDao typeDao;
 	private HiloUtil hiloUtil;
@@ -131,10 +141,10 @@ public class BookDaoMysqlImpl extends JdbcDaoSupport implements IBookDao{
 	public void save(Book book) {
 		book.setId(hiloUtil.getValue());
 		getJdbcTemplate().update("insert into t_book ("+BOOK_COLUMN+")" +
-				" values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
+				" values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"
 				, new Object[]{
 				book.getId(),
-				book.getName(),book.getAuthor(),book.getCode(),book.getBookConcern(),book.getPinYin(),book.getFullPinYin()
+				book.getName(),book.getAuthor(),book.getTranslator(),book.getPages(),book.getCode(),book.getBookConcern(),book.getPinYin(),book.getFullPinYin()
 				,book.getFileName(),book.getReadCount(),book.getDownLoadCount(),book.getStatue(),book.getBookDate(),
 				book.getCoverImg(),book.getSwf(),book.getDesc(),book.getCreatedDate(),book.getCreatedBy()
 		});
@@ -152,12 +162,19 @@ public class BookDaoMysqlImpl extends JdbcDaoSupport implements IBookDao{
 
 	@Override
 	public void update(Book book) {
-		getJdbcTemplate().update("update t_book set c_name=?,c_author=?,c_code=?," +
-				"c_book_concern=?,c_py=?,c_fpy=?,c_fileName=?,c_read_count=?,c_download_count=?," +
+		getJdbcTemplate().update("update t_book set c_name=?,c_author=?,c_translator=?" +
+//				",c_pages=?" +
+				",c_code=?,c_book_concern=?,c_py=?,c_fpy=?" +
+//				",c_fileName=?" +
+				",c_read_count=?,c_download_count=?," +
 				"c_state=?,c_book_date=?,c_cover_img=?,c_desc=?,c_created_date=?,c_created_by=? where c_id=?"
 				, new Object[]{
-				book.getName(),book.getAuthor(),book.getCode(),book.getBookConcern(),book.getPinYin(),book.getFullPinYin()
-				,book.getFileName(),book.getReadCount(),book.getDownLoadCount(),book.getStatue(),book.getBookDate(),
+				book.getName(),book.getAuthor(),book.getTranslator()
+				//,book.getPages()
+				,book.getCode(),book.getBookConcern()
+				,book.getPinYin(),book.getFullPinYin()
+				//,book.getFileName()
+				,book.getReadCount(),book.getDownLoadCount(),book.getStatue(),book.getBookDate(),
 				book.getCoverImg(),book.getDesc(),book.getCreatedDate(),book.getCreatedBy(),book.getId()
 		});
 		Set<Type> newSet = new HashSet<Type>(book.getTypes());
@@ -193,11 +210,11 @@ public class BookDaoMysqlImpl extends JdbcDaoSupport implements IBookDao{
 
 	@Override
 	public int getTotal(String name, String author, String code,
-			String bookConcern, Integer typeId) {
-		WhereUtil util = totalSQLUtil.createWhereUtil();
+			String bookConcern,String desc, Integer typeId) {
+		WhereUtil util = (typeId!=null?totalSQLUtil:totalSQLUtilWithOutType).createWhereUtil();
 		util.addSimpleLike(name).addEqual(author)
-		.addEqual(code).addEqual(bookConcern)
-		.addEqual(typeId);
+		.addEqual(code).addEqual(bookConcern).addSimpleLike(desc);
+		if(typeId!=null)util.addEqual(typeId);
 		System.out.println(util.toString());
 		return getJdbcTemplate().queryForInt(util.toString(), util.getParamList().toArray());
 	}
@@ -205,11 +222,15 @@ public class BookDaoMysqlImpl extends JdbcDaoSupport implements IBookDao{
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Book> listBook(String name, String author, String code,
-			String bookConcern, Integer typeId,int start,int size) {
-		WhereUtil util = listBookUtil.createWhereUtil();
+			String bookConcern,String desc, Integer typeId,int start,int size) {
+		WhereUtil util = (typeId!=null?listBookUtil:listBookUtilWithOutType).createWhereUtil();
 		util.addSimpleLike(name).addEqual(author)
-		.addEqual(code).addEqual(bookConcern)
-		.addEqual(typeId).addLimit(start, size);
+		.addEqual(code).addEqual(bookConcern).addSimpleLike(desc);
+		if(typeId!=null){
+			util.addEqual(typeId).addLimit(start, size);
+		}else{
+			util.addLimit(start, size);
+		}
 		System.out.println(util.toString());
 		return getJdbcTemplate().query(util.toString(), util.getParamList().toArray(), rowMapper);
 	}

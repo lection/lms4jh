@@ -57,15 +57,9 @@ public class BookUploadServiceImpl implements IBookUploadService{
 				}
 			}
 			bookDao.save(book);
-		}catch(SQLException se){
+		}catch(Exception se){
 			deleteFile(new File[]{newBook,newCoverImg,newSwf});
 			throw se;
-		}catch(IOException ioe){
-			deleteFile(new File[]{newBook,newCoverImg,newSwf});
-			throw new Exception("服务器文件复制出现故障，可能是文件路径配置错误，或者没有权限进行读写。\n\r",ioe);
-		}catch(FileConverException fce){
-			deleteFile(new File[]{newBook,newCoverImg,newSwf});
-			throw fce;
 		}
 	}
 	

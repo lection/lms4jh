@@ -2,7 +2,7 @@ package lms.filter;
 
 import javax.servlet.http.HttpSession;
 
-import lms.action.ManagerAction;
+import lms.model.LmsUser;
 
 import org.apache.struts2.ServletActionContext;
 
@@ -23,8 +23,11 @@ public class ManagerLoginInterceptor implements Interceptor {
 	public String intercept(ActionInvocation inv) throws Exception {
 		HttpSession session = 
 			ServletActionContext.getRequest().getSession(false);
-		if(session == null || 
-				session.getAttribute(ManagerAction.LOGIN_FLAG) == null){
+		if(session == null){
+			return "login";
+		}
+		LmsUser user = (LmsUser) session.getAttribute(LmsUser.LOGIN_FLAG);
+		if(user == null || user.getRole() != LmsUser.MANAGER){
 			return "login";
 		}
 		return inv.invoke();

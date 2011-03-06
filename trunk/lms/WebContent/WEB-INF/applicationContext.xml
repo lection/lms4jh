@@ -17,21 +17,28 @@
 		<property name="initialPoolSize" value="2"/>
 		<property name="maxIdleTime" value="100"/>
     </bean>
-    <!--Action
-	<bean id="downLoadAction" class="lms.action.DownloadBookAction" >
-		<property name="fileDir">
-			<value>E:\ebook\it</value>
-		</property>
+    <!-- SessionFactroy -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+	    <property name="dataSource" ref="dataSource"/>
+	    <property name="mappingResources">
+	        <list>
+	        	<value>lms/hbm/Student.hbm.xml</value>
+	        	<value>lms/hbm/LmsLog.hbm.xml</value>
+	        </list>
+	    </property>
+	    <property name="hibernateProperties">
+	        <value>
+	            hibernate.dialect=org.hibernate.dialect.MySQLDialect
+	            hibernate.show_sql=true
+	        </value>
+	    </property>
 	</bean>
-	<bean id="viewBookAction" class="lms.action.ViewBookAction" >
-		<property name="fileDir">
-			<value>E:\ebook\it</value>
-		</property>
-	</bean>-->
     <!-- Dao -->
     <bean id="managerDao" class="lms.dao.impl.ManagerDaoMysqlImpl"/>
     <bean id="typeDao" class="lms.dao.impl.TypeDaoMysqlImpl"/>
     <bean id="bookDao" class="lms.dao.impl.BookDaoMysqlImpl"/>
+    <bean id="studentDao" class="lms.dao.impl.StudentDaoHbImpl"/>
+    <bean id="lmsLogDao" class="lms.dao.impl.LmsLogDaoHbImpl"/>
     <!-- Service -->
     <bean id="bookUploadService" class="lms.service.impl.BookUploadServiceImpl">
     	<property name="bookDir">

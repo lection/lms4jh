@@ -37,6 +37,11 @@
 				alert("书籍名称不允许为空");
 				return false;
 			}
+			var book_pages = $("#book_pages").val();
+			if(!book_pages||isNaN(book_pages)){
+				alert("图书的页数必须填写数字");
+				return false;
+			}
 			var book_types=$("#book_types input:checkbox:checked");
 			if(!book_types||book_types.length==0){
 				alert("图书至少要选择一个分类");
@@ -56,8 +61,10 @@
 		var input=$("#"+id);
 		if(input.attr("readonly")){
 			input.removeAttr("readonly");
+			input.css("background-color","white");
 		}else{
 			input.attr("readonly","readonly");
+			input.css("background-color","silver");
 		}
 	}
 </SCRIPT>
@@ -80,6 +87,14 @@
 				<td><input name="book.author" type="text" size="30"/></td>
 			</tr>
 			<tr>
+				<td>译者</td>
+				<td><input name="book.translator" type="text" size="30"/></td>
+			</tr>
+			<tr>
+				<td>页数</td>
+				<td><input name="book.pages" id="book_pages" type="text" size="30"/></td>
+			</tr>
+			<tr>
 				<td>书籍编码</td>
 				<td><input name="book.code" type="text" size="30"/></td>
 			</tr>
@@ -93,12 +108,12 @@
 			</tr>
 			<tr>
 				<td>拼音</td>
-				<td><input id="pinyin" name="book.fullPinYin" type="text" readonly="readonly" size="15"/>
+				<td><input id="pinyin" style="background-color: silver;" name="book.fullPinYin" type="text" readonly="readonly" size="15"/>
 				<label><input type="checkbox" onClick="fn_can_edit('pinyin')"/>修改</label></td>
 			</tr>
 			<tr>
 				<td>拼音缩写</td>
-				<td><input id="py" readonly="readonly" name="book.pinYin" type="text" size="10"/>
+				<td><input id="py" style="background-color: silver;" readonly="readonly" name="book.pinYin" type="text" size="10"/>
 				<label><input type="checkbox" onClick="fn_can_edit('py')"/>修改</label></td>
 			</tr>
 			<tr>
@@ -130,6 +145,10 @@
 			<tr>
 				<td>上传图书封面</td>
 				<td><input name="coverImg" type="file" size="30"/></td>
+			</tr>
+			<tr>
+				<td>简介</td>
+				<td><textarea cols="30" rows="3" name="book.desc"></textarea></td>
 			</tr>
 			<tr>
 				<td><input type="submit" value="添加"/></td>

@@ -5,6 +5,8 @@ import lms.model.Type;
 
 import org.apache.struts2.ServletActionContext;
 
+import util.LogUtil;
+
 import com.opensymphony.xwork2.ActionSupport;
 
 public class TypeAction extends ActionSupport{
@@ -24,6 +26,7 @@ public class TypeAction extends ActionSupport{
 	public String type_save(){
 		typeDao.save(type);
 		addActionMessage(type.getName()+" 分类 添加成功");
+		LogUtil.userLog("添加分类"+type.getName());
 		return type_manager();
 	}
 	
@@ -31,6 +34,7 @@ public class TypeAction extends ActionSupport{
 		type = typeDao.loadType(type.getId());
 		typeDao.deleteById(type.getId());
 		addActionMessage(type.getName()+" 分类 删除成功");
+		LogUtil.userLog("删除分类"+type.getName());
 		return type_manager();
 	}
 	
@@ -42,6 +46,7 @@ public class TypeAction extends ActionSupport{
 	public String type_update(){
 		typeDao.update(type);
 		addActionMessage(type.getName()+" 分类修改成功");
+		LogUtil.userLog("修改分类"+type.getName());
 		return type_manager();
 	}
 	

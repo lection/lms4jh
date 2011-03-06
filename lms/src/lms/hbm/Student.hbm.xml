@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="lms.model">
+	<class name="Student" table="t_student">
+		<id name="id">
+			<generator class="native"/>
+		</id>
+		<property name="loginName" column="c_loginname" not-null="true" unique="true"/>
+		<property name="password" column="c_password" not-null="true"/>
+		<property name="grade" column="c_grade" not-null="true"/>
+		<property name="name" column="c_name" not-null="true"/>
+		<property name="gender" column="c_gender" not-null="true"/>
+		<property name="birthday" column="c_birthday" type="date"/>
+		<property name="desc" column="c_desc" type="text" lazy="true"/>
+		<property name="role" column="c_role" not-null="true"/>
+			
+	</class>
+	
+</hibernate-mapping>

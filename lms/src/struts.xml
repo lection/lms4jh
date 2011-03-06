@@ -4,6 +4,7 @@
 	"http://struts.apache.org/dtds/struts-2.1.dtd">
 <struts>
 <constant name= "struts.multipart.maxSize" value="524288000" />
+<constant name="struts.ognl.allowStaticMethodAccess" value="true"/>
 	<package name="action" extends="struts-default">
 		<default-action-ref name="lms"></default-action-ref>
 		<action name="lms" class="lms.action.LmsAction">
@@ -11,6 +12,17 @@
 		</action>
 		<action name="lms_*" class="lms.action.LmsAction" method="{1}">
 			<result name="div">/WEB-INF/pages/action/index_div.jsp</result>
+		</action>
+		<action name="userLogin" class="lms.action.StudentManagerAction" method="login">
+			<result name="success" type="redirect">/</result>
+			<result name="error">/user_login.jsp</result>
+		</action>
+		<action name="userLogout" class="lms.action.StudentManagerAction" method="logout">
+			<result name="success" type="redirect">/</result>
+		</action>
+		<action name="register" class="lms.action.StudentManagerAction" method="stu_register">
+			<result name="success">/reg_success.jsp</result>
+			<result name="error">/reg_error.jsp</result>
 		</action>
 	</package>
 	
@@ -29,6 +41,7 @@
 		
 		<global-results>
 			<result name="login">/WEB-INF/pages/manager/login.jsp</result>
+			<result name="lms_del">/WEB-INF/pages/manager/lms_del.jsp</result>
 			<result name="input">/input.jsp</result>
 		</global-results>
 		<action name="manager_auth" class="lms.action.ManagerAction" method="manager_auth">
@@ -50,10 +63,26 @@
 			<result name="add">/WEB-INF/pages/manager/addBook.jsp</result>
 			<result name="book">/WEB-INF/pages/manager/book.jsp</result>
 		</action>
+		<action name="stu_*" class="lms.action.StudentManagerAction" method="stu_{1}">
+			<result name="manager">/WEB-INF/pages/manager/student_manager.jsp</result>
+			<result name="add">/WEB-INF/pages/manager/addStudent.jsp</result>
+			<result name="stu">/WEB-INF/pages/manager/student.jsp</result>
+		</action>
+		<action name="logList" class="lms.action.LogAction">
+			<result name="success">/WEB-INF/pages/manager/logList.jsp</result>
+		</action>
 		<!-- 下划线开头，防止sitemesh进行包装 -->
 		<action name="_book_*" class="lms.action.BookManagerAction" method="book_{1}">
 			<result name="list_div">/WEB-INF/pages/manager/book_manager_div.jsp</result>
 		</action>
+		<action name="_log_*" class="lms.action.LogAction" method="log_{1}">
+			<result>/WEB-INF/pages/manager/logList_div.jsp</result>
+		</action>
+		<action name="_stu_*" class="lms.action.StudentManagerAction" method="stu_{1}">
+			<result>/WEB-INF/pages/manager/student_manager_div.jsp</result>
+			<result name="change">/WEB-INF/pages/manager/student_change.jsp</result>
+		</action>
+		<!-- 上传图书 -->
 		<action name="bookfile_*" class="lms.action.BookFileAction" method="{1}">
 			<result type="chain">book_add</result>
 			<result name="input">/WEB-INF/pages/manager/addBook.jsp</result>

@@ -9,7 +9,7 @@
 			<th>出版社</th>
 			<th>日期</th>
 			<th>编码</th>
-			<th>编辑</th>
+			<th>操作</th>
 			<th>下载</th>
 			<th>浏览</th>
 		</tr>
@@ -20,9 +20,9 @@
 			<td><a href="book_book.action?book.id=<s:property value="#b.id"/>" target="_blank"><s:property value="#b.name"/></a></td>
 			<td><s:property value="#b.author"/></td>
 			<td><s:property value="#b.bookConcern"/></td>
-			<td><s:date name="#b.bookDate" format="yyyy-mm-dd"/></td>
+			<td><s:date name="#b.bookDate" format="yyyy-MM-dd"/></td>
 			<td><s:property value="#b.code"/></td>
-			<td><a>编辑</a></td>
+			<td><input type="button" value="删除" onClick="lms_del(<s:property value="id"/>,<s:property value="page.page"/>);"/></td>
 			<td>
 				<s:if test="#b.fileName!=null&&#b.statue==@lms.model.Book@CAN_DOWNLOAD">
 					<a href="download.action?book.id=<s:property value="#b.id"/>" target="_blank">下载</a>

@@ -1,6 +1,6 @@
 package lms.model;
 
-public class Manager {
+public class Manager implements LmsUser{
 	private int id;
 	private String loginName;
 	private String password;
@@ -50,5 +50,17 @@ public class Manager {
 	}
 	public void setExt_String(String ext_String) {
 		this.ext_String = ext_String;
+	}
+	@Override
+	public String getUserName() {
+		return getLoginName();
+	}
+	@Override
+	public Integer getRole() {
+		return LmsUser.MANAGER;
+	}
+	@Override
+	public long getUserId() {
+		return getId();
 	}
 }

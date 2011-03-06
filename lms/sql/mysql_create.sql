@@ -2,6 +2,8 @@ create table t_book(
 	c_id int primary key,
 	c_name varchar(60) not null,
 	c_author varchar(60),
+	c_translator varchar(30),
+	c_pages int not null,
 	c_code varchar(20),
 	c_book_concern varchar(30),
 	c_py varchar(30),
@@ -16,7 +18,7 @@ create table t_book(
 	c_desc text,
 	c_created_date datetime,
 	c_created_by varchar(30)
-)type=InnoDB;
+)
 
 
 create table t_manager(
@@ -44,6 +46,17 @@ create table t_book_type(
 create table t_book_hilo(
 	c_hi int
 );
+
+create table t_lms_log(
+	c_id bigint primary key auto_increment,
+	c_login_name  varchar(20) not null,
+	c_user_id int not null,
+	c_role	int not null,
+	c_ip varchar(60) not null,
+	c_handle varchar(200) not null,
+	c_date datetime not null
+);
+
 insert into t_manager values(null,'admin','admin','admin',null,null,null);
 insert into t_type values(null,'默认分类','默认分类');
 insert into t_book_hilo values(0);

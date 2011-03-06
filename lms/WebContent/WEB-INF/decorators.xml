@@ -4,5 +4,7 @@
           <pattern>/manager*.action</pattern>
           <pattern>/type*.action</pattern>
           <pattern>/book*.action</pattern>
+          <pattern>/stu*.action</pattern>
+          <pattern>/logList.action</pattern>
     </decorator>
 </decorators>

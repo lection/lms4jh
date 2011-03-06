@@ -1,31 +1,39 @@
 package lms.action;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import lms.dao.ILmsLogDao;
 import lms.dao.IManagerDao;
+import lms.model.LmsLog;
+import lms.model.LmsUser;
 import lms.model.Manager;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import util.AuthCodeValidateUtil;
 
 import com.opensymphony.xwork2.ActionSupport;
+import static util.LogUtil.userLog;
 
 public class ManagerAction extends ActionSupport{
 	private static final long serialVersionUID = 7692682388105922418L;
-	public static final String LOGIN_FLAG = "LMS_MANAGER_LOGIN";
 	private IManagerDao managerDao;
+	private ILmsLogDao lmsLogDao;
 	private Manager manager;
 	
 	
 	public String manager_login(){
-		
 		return "login";
 	}
 	
 	public String manager_logout(){
 		HttpSession session = ServletActionContext.getRequest().getSession(false);
+		userLog("退出系统");
 		if(session != null){
 			session.invalidate();
 		}
@@ -34,6 +42,10 @@ public class ManagerAction extends ActionSupport{
 	}
 	
 	public String manager_auth(){
+		if(!AuthCodeValidateUtil.validate()){
+			addActionError("验证码错误");
+			return manager_login();
+		}
 		Manager m = null;
 //		System.out.println(manager.getLoginName());
 		m = managerDao.loadManager(manager.getLoginName());
@@ -43,7 +55,8 @@ public class ManagerAction extends ActionSupport{
 			return manager_login();
 		}
 		manager = m;
-		ServletActionContext.getRequest().getSession().setAttribute(LOGIN_FLAG, manager);
+		ServletActionContext.getRequest().getSession().setAttribute(LmsUser.LOGIN_FLAG, manager);
+		userLog("登录系统");
 		return "welcome";
 	}
 	
@@ -56,6 +69,7 @@ public class ManagerAction extends ActionSupport{
 	public String manager_addManager(){
 		managerDao.save(manager);
 		addActionMessage("用户 "+manager.getLoginName()+" 添加成功");
+		userLog("添加用户"+manager.getLoginName());
 		return manager_manager();
 	}
 	
@@ -64,6 +78,7 @@ public class ManagerAction extends ActionSupport{
 		manager = managerDao.loadManager(manager.getId());
 		managerDao.deleteById(manager.getId());
 		addActionMessage(manager.getLoginName()+" "+manager.getName()+" 用户删除成功");
+		userLog("删除用户"+manager.getLoginName());
 		return manager_manager();
 	}
 	
@@ -81,6 +96,7 @@ public class ManagerAction extends ActionSupport{
 		}
 		managerDao.update(m_update);
 		addActionMessage(manager.getLoginName()+" 用户修改成功");
+		userLog("编辑用户"+manager.getLoginName());
 		return manager_manager();
 	}
 
@@ -98,5 +114,13 @@ public class ManagerAction extends ActionSupport{
 
 	public void setManagerDao(IManagerDao managerDao) {
 		this.managerDao = managerDao;
+	}
+
+	public ILmsLogDao getLmsLogDao() {
+		return lmsLogDao;
+	}
+
+	public void setLmsLogDao(ILmsLogDao lmsLogDao) {
+		this.lmsLogDao = lmsLogDao;
 	}
 }

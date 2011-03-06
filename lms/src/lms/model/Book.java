@@ -13,6 +13,8 @@ public class Book {
 	private int id;
 	private String name;
 	private String author;
+	private String translator;
+	private int pages;
 	private List<Type> types = new ArrayList<Type>(0);
 	private String code;
 	private String bookConcern;
@@ -142,7 +144,23 @@ public class Book {
 		this.swf = swf;
 	}
 
+	public String getTranslator() {
+		return translator;
+	}
+
+	public void setTranslator(String translator) {
+		this.translator = translator;
+	}
+
 	public String toString(){
 		return ReflectionToStringBuilder.toString(this);
+	}
+
+	public int getPages() {
+		return pages;
+	}
+
+	public void setPages(int pages) {
+		this.pages = pages;
 	}
 }

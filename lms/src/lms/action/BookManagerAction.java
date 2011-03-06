@@ -13,13 +13,13 @@ import com.opensymphony.xwork2.ActionSupport;
 public class BookManagerAction extends ActionSupport{
 	
 	private static final long serialVersionUID = -108259628369491316L;
+	private static final int BOOK_MANAGER_PAGESIZE = 10;
 	
 	private IBookDao bookDao;
 	private ITypeDao typeDao;
 	private Book book;
 	private List<Type> types;
 	private LmsPage page;
-	private int bookManagerPageSize = 10;
 	private Integer typeId;
 	private int pageNum = 1;
 	
@@ -33,7 +33,7 @@ public class BookManagerAction extends ActionSupport{
 	
 	private void listBook(int pageNum){
 		types = typeDao.listType();
-		page = new LmsPage(pageNum,bookManagerPageSize,bookDao.getTotal());
+		page = new LmsPage(pageNum,BOOK_MANAGER_PAGESIZE,bookDao.getTotal());
 		page.setContent(bookDao.listBook(page.getStart(), page.getPageSize()));
 	}
 	
@@ -48,18 +48,18 @@ public class BookManagerAction extends ActionSupport{
 			int total = 0;
 			List<Book> list = null;
 			if(book != null){
-				total=bookDao.getTotal(book.getName(), book.getAuthor(), book.getCode(), book.getBookConcern(), typeId);
-				page = new LmsPage(pageNum,bookManagerPageSize,total);
-				list = bookDao.listBook(book.getName(), book.getAuthor(), book.getCode(), book.getBookConcern(), typeId, page.getStart(), page.getPageSize()); 
+				total=bookDao.getTotal(book.getName(), book.getAuthor(), book.getCode(), book.getBookConcern(),book.getDesc(), typeId);
+				page = new LmsPage(pageNum,BOOK_MANAGER_PAGESIZE,total);
+				list = bookDao.listBook(book.getName(), book.getAuthor(), book.getCode(), book.getBookConcern(),book.getDesc(), typeId, page.getStart(), page.getPageSize()); 
 			}else if(typeId != null){
 				Type type = new Type();
 				type.setId(typeId);
 				total = bookDao.getTotal(type);
-				page = new LmsPage(pageNum,bookManagerPageSize,total);
+				page = new LmsPage(pageNum,BOOK_MANAGER_PAGESIZE,total);
 				list = bookDao.listBook(page.getStart(),page.getPageSize(), type);
 			}else{
 				total=bookDao.getTotal();
-				page = new LmsPage(pageNum,bookManagerPageSize,total);
+				page = new LmsPage(pageNum,BOOK_MANAGER_PAGESIZE,total);
 				list = bookDao.listBook(page.getStart(), page.getPageSize());
 			}
 			page.setContent(list);
@@ -72,6 +72,11 @@ public class BookManagerAction extends ActionSupport{
 	public String book_add(){
 		types = typeDao.listType();
 		return "add";
+	}
+	
+	public String book_del(){
+		bookDao.deleteById(book.getId());
+		return "lms_del";
 	}
 	
 	public String book_book(){

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="lms.model">
+	<class name="LmsLog" table="t_lms_log">
+		<id name="id" column="c_id">
+			<generator class="native"/>
+		</id>
+		<property name="loginName" column="c_login_name" not-null="true"/>
+		<property name="userId" column="c_user_id" not-null="true"/>
+		<property name="role" column="c_role" not-null="true"/>
+		<property name="ip" column="c_ip" not-null="true"/>
+		<property name="handle" column="c_handle" not-null="true"/>
+		<property name="date" column="c_date" type="timestamp" not-null="true"/>
+	</class>
+	
+</hibernate-mapping>

@@ -61,7 +61,7 @@
             attributes.name = "FlexPaperViewer";
             swfobject.embedSWF(
                 "FlexPaperViewer.swf", "flashContent", 
-                "800", "660", 
+                "1024", "800", 
                 swfVersionStr, xiSwfUrlStr, 
                 flashvars, params, attributes);
 			swfobject.createCSS("#flashContent", "display:block;text-align:left;");
@@ -69,9 +69,11 @@
         
     </head> 
     <body> 
-    	<div style="position:absolute;left:10px;top:10px;">
+    <center>
+    	<div style="position:absolute;left:10px;top:10px">
 	        <div id="flashContent"> 
 	        </div>
         </div>
+   </center>
    </body> 
 </html> 

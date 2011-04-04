@@ -40,7 +40,7 @@
     <bean id="studentDao" class="lms.dao.impl.StudentDaoHbImpl"/>
     <bean id="lmsLogDao" class="lms.dao.impl.LmsLogDaoHbImpl"/>
     <!-- Service -->
-    <bean id="bookUploadService" class="lms.service.impl.BookUploadServiceImpl">
+    <bean id="bookUploadService" class="lms.service.impl.BookUploadServiceSegmentsImpl">
     	<property name="bookDir">
     		<value>E:\test\book</value>
     	</property>
@@ -53,9 +53,10 @@
     </bean>
 	<!--Book HiloUtil-->
 	<bean id="hiloUtil" class="util.HiloUtil"/>
-	<bean id="conver" class="util.TypeConver4WinPdf">
+	<bean id="conver" class="util.TypeConver4WinPdfSegments">
 		<property name="common">
 			<value>D:\Program Files\SWFTools\pdf2swf.exe</value>
 		</property>
+		<property name="definition" value="20"></property>
 	</bean>
 </beans>

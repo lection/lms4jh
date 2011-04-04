@@ -26,6 +26,8 @@ public class Book {
 	private int statue;
 	private String fileName;
 	private String swf;
+	private int	segments;
+	private int segmentSize;
 	private String coverImg;
 	private Date createdDate;
 	private String createdBy;
@@ -162,5 +164,21 @@ public class Book {
 
 	public void setPages(int pages) {
 		this.pages = pages;
+	}
+
+	public int getSegments() {
+		return segments;
+	}
+
+	public void setSegments(int segments) {
+		this.segments = segments;
+	}
+
+	public int getSegmentSize() {
+		return segmentSize;
+	}
+
+	public void setSegmentSize(int segmentSize) {
+		this.segmentSize = segmentSize;
 	}
 }

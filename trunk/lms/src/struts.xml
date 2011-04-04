@@ -7,11 +7,17 @@
 <constant name="struts.ognl.allowStaticMethodAccess" value="true"/>
 	<package name="action" extends="struts-default">
 		<default-action-ref name="lms"></default-action-ref>
+		<global-results>
+			<result name="input">/input.jsp</result>
+		</global-results>
 		<action name="lms" class="lms.action.LmsAction">
 			<result>/WEB-INF/pages/action/index.jsp</result>
 		</action>
 		<action name="lms_*" class="lms.action.LmsAction" method="{1}">
 			<result name="div">/WEB-INF/pages/action/index_div.jsp</result>
+		</action>
+		<action name="lmsSeg.action" class="lms.action.LmsAction" method="viewBookSeg">
+			<result>/viewSeg.jsp</result>
 		</action>
 		<action name="userLogin" class="lms.action.StudentManagerAction" method="login">
 			<result name="success" type="redirect">/</result>
@@ -61,11 +67,12 @@
 			<result name="manager">/WEB-INF/pages/manager/book_manager.jsp</result>
 			<result name="list_div">/WEB-INF/pages/manager/book_manager_div.jsp</result>
 			<result name="add">/WEB-INF/pages/manager/addBook.jsp</result>
-			<result name="book">/WEB-INF/pages/manager/book.jsp</result>
 		</action>
 		<action name="stu_*" class="lms.action.StudentManagerAction" method="stu_{1}">
 			<result name="manager">/WEB-INF/pages/manager/student_manager.jsp</result>
 			<result name="add">/WEB-INF/pages/manager/addStudent.jsp</result>
+			<result name="edit">/WEB-INF/pages/manager/editStudent.jsp</result>
+			<result name="update" type="redirectAction">stu_manager</result>
 			<result name="stu">/WEB-INF/pages/manager/student.jsp</result>
 		</action>
 		<action name="logList" class="lms.action.LogAction">
@@ -74,6 +81,9 @@
 		<!-- 下划线开头，防止sitemesh进行包装 -->
 		<action name="_book_*" class="lms.action.BookManagerAction" method="book_{1}">
 			<result name="list_div">/WEB-INF/pages/manager/book_manager_div.jsp</result>
+			<result name="book">/WEB-INF/pages/action/book.jsp</result>
+		</action>
+		<action name="_bookfile_delete" class="lms.action.BookFileAction" method="delete">
 		</action>
 		<action name="_log_*" class="lms.action.LogAction" method="log_{1}">
 			<result>/WEB-INF/pages/manager/logList_div.jsp</result>
@@ -82,7 +92,7 @@
 			<result>/WEB-INF/pages/manager/student_manager_div.jsp</result>
 			<result name="change">/WEB-INF/pages/manager/student_change.jsp</result>
 		</action>
-		<!-- 上传图书 -->
+		<!-- 上传删除图书 -->
 		<action name="bookfile_*" class="lms.action.BookFileAction" method="{1}">
 			<result type="chain">book_add</result>
 			<result name="input">/WEB-INF/pages/manager/addBook.jsp</result>
@@ -111,11 +121,11 @@
 			</result>
 		</action>
 		<action name="view" class="lms.action.ViewBookAction" method="toView">
-			<result name="view">/viewer.jsp</result>
+			<result name="view">/viewerSeg.jsp</result>
 		</action>
 		<action name="download" class="lms.action.DownloadBookAction">
 			<result type="stream">
-				<param name="contentType">application/download</param>
+				<param name="contentType">application/octet-stream</param>
 				<param name="inputName">stream</param>
 				<param name="contentDisposition">filename="${fileName}"</param>
 			</result>

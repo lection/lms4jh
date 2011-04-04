@@ -15,6 +15,8 @@ create table t_book(
 	c_book_date date,
 	c_cover_img varchar(45),
 	c_swf varchar(45),
+	c_segments int,
+	c_segment_size int,
 	c_desc text,
 	c_created_date datetime,
 	c_created_by varchar(30)

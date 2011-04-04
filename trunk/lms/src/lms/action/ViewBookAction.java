@@ -25,13 +25,13 @@ public class ViewBookAction extends ActionSupport {
 	private IBookUploadService bookUploadService;
 	
 	public String execute() throws FileNotFoundException{
-		book = bookDao.getBookById(book.getId());
+//		int seg = book.getSegments();
+		//book = bookDao.getBookById(book.getId());
 //		paper = new FileInputStream(
 //			new File(fileDir,book.getFileName()+".swf"));
 //		System.out.println(book.getSwf());
 		if(ServletActionContext.getRequest().getSession().getAttribute(LmsUser.LOGIN_FLAG) != null){
-			paper = bookUploadService.viewSWF(book.getSwf());
-			LogUtil.userLog("阅读图书《"+book.getName()+"》");
+			paper = bookUploadService.viewSWF(book.getSwf(),book.getSegments());
 			return SUCCESS;
 		}else{
 			return "fileNotFound";
@@ -39,6 +39,7 @@ public class ViewBookAction extends ActionSupport {
 	}
 	
 	public String toView(){
+		book = bookDao.getBookById(book.getId());
 		return "view";
 	}
 

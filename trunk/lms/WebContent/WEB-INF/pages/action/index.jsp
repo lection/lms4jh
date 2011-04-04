@@ -22,7 +22,29 @@ function fn_findByType(id){
 }
 function fn_reset(){
 	lmsPageUtil.url="lms_listBook.action";
+	lmsPageUtil.param={};
 	lmsPageUtil.go(1);
+}
+function fn_can_download(bid){
+	$.ajax({
+		"url":"canDownload.jsp",
+		"async":"false",
+		"dataType":"json",
+		"cache":false,
+		"success":function(data){
+			if("student"==data.role){
+				if(data.count>0){
+					if(confirm("您还有"+data.count+"次下载机会，确认下载吗？")){
+						window.location="download.action?book.id="+bid;
+					}
+				}else{
+					alert("您本月已经不允许下载了");
+				}
+			}else{
+				window.location="download.action?book.id="+bid;
+			}
+		}
+	});
 }
 </script>
 </HEAD>
@@ -59,11 +81,11 @@ function fn_reset(){
                  	<a onClick="fn_reset();">全部图书</a> 
                  </TD>
               </TR>
-              <s:iterator value="listType" var="t">
+              <s:iterator value="listType">
               <TR>
                 <TD height=25><IMG height=11 src="images/icon1.gif" 
                   width=31>&nbsp;&nbsp;&nbsp;&nbsp;
-                 	<a onClick="fn_findByType(<s:property value="#t.id"/>);"><s:property value="#t.name"/></a> 
+                 	<a onClick="fn_findByType(<s:property value="id"/>);"><s:property value="name"/></a> 
                  </TD>
               </TR>
               </s:iterator>
@@ -92,8 +114,8 @@ function fn_reset(){
 	书名<input type="text" name="book.name" value="<s:property value="book.name"/>"/>
 	分类<select name="typeId">
 		<option value="">&nbsp;可以选择图书分类&nbsp;&nbsp;</option>
-	<s:iterator value="types" var="t">
-		<option <s:if test="#t.id==typeId">selected="selected"</s:if> value="<s:property value="#t.id"/>"><s:property value="#t.name"/></option>
+	<s:iterator value="listType">
+		<option <s:if test="id==typeId">selected="selected"</s:if> value="<s:property value="id"/>"><s:property value="name"/></option>
 	</s:iterator>
 	</select>
 	作者<input type="text" name="book.author" value="<s:property value="book.author"/>"/>

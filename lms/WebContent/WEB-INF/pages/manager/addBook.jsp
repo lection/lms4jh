@@ -75,7 +75,7 @@
 	<s:fielderror/>
 	<s:actionerror/>
 	<form id="add_book_form" action="bookfile_save.action" method="post" enctype="multipart/form-data">
-	<table width="85%">
+	<table width="95%">
 		<thead></thead>
 		<tbody>
 			<tr>

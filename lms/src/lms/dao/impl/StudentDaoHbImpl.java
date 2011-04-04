@@ -2,6 +2,7 @@ package lms.dao.impl;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import lms.dao.IStudentDao;
@@ -101,6 +102,14 @@ public class StudentDaoHbImpl extends HibernateDaoSupport implements IStudentDao
 				return session.createQuery("from Student as s where s.loginName=:ln").setString("ln", loginName).uniqueResult();
 			}
 		});
+	}
+
+	@Override
+	public void updateDownloadCount(Long id, int count) {
+		Student student = (Student)getHibernateTemplate().get(Student.class, id);
+		student.setDownloadCount(count);
+		student.setLastDownloadDate(new Date());
+		getHibernateTemplate().update(student);
 	}
 
 }

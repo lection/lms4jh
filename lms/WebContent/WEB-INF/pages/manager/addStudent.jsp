@@ -12,7 +12,7 @@ $(function() {
 		dateFormat:'yy-mm-dd'
 	});
 	$("#add_student_form").submit(function(){
-		var stu_inputs = $(this).find("input[type='text']");
+		var stu_inputs = $(this).find("input[type='text'],input[type='password']");
 		var submit_flag = true;
 		stu_inputs.each(function(){
 			var input_val = $(this).val();
@@ -21,6 +21,10 @@ $(function() {
 				submit_flag = false;
 			}
 		});
+		if(isNaN($(this).find("input[name='student.maxDownloadCount']").val())){
+			alert("下载上限必须为数字");
+			submit_flag = false;
+		}
 		return submit_flag;
 	});
 });
@@ -32,7 +36,7 @@ $(function() {
 	<s:fielderror/>
 	<s:actionerror/>
 	<form id="add_student_form" action="stu_save.action" method="post">
-	<table width="85%">
+	<table width="100%">
 		<thead></thead>
 		<tbody>
 			<tr>
@@ -41,7 +45,7 @@ $(function() {
 			</tr>
 			<tr>
 				<td width="35%">密码</td>
-				<td width="65%"><input name="student.password" type="text" size="30"/></td>
+				<td width="65%"><input name="student.password" type="password" size="30"/></td>
 			</tr>
 			<tr>
 				<td width="35%">姓名</td>
@@ -77,6 +81,10 @@ $(function() {
 				<td width="35%">角色状态</td>
 				<td width="65%"><label><input type="radio" name="student.role" checked="checked" value="<s:property value="@lms.model.Student@STUDENT"/>"/>在校学生</label>&nbsp;&nbsp;
 				<label><input type="radio" name="student.role" value="<s:property value="@lms.model.Student@SCHOOLFELLOW"/>"/>校友</label></td>
+			</tr>
+			<tr>
+				<td width="35%">每月下载上限</td>
+				<td width="65%"><input name="student.maxDownloadCount" type="text" size="30" value="5"/></td>
 			</tr>
 			<tr>
 				<td><input type="submit" value="添加"/></td>

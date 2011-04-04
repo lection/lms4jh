@@ -4,40 +4,42 @@
 <table width="100%" border="1">
 	<thead>
 		<tr>
-			<th>书名</th>
-			<th>作者</th>
-			<th>出版社</th>
-			<th>日期</th>
-			<th>编码</th>
-			<th>操作</th>
-			<th>下载</th>
-			<th>浏览</th>
+			<th width="200">书名</th>
+			<th width="150">作者</th>
+			<th width="100">编码</th>
+			<th width="100">译者</th>
+			<th width="50">页数</th>
+			<th width="50">操作</th>
+			<th width="50">下载</th>
+			<th width="50">浏览</th>
 		</tr>
 	</thead>
 	<tbody>
-	<s:iterator value="page.content" var="b">
+	<s:iterator value="page.content">
 		<tr>
-			<td><a href="book_book.action?book.id=<s:property value="#b.id"/>" target="_blank"><s:property value="#b.name"/></a></td>
-			<td><s:property value="#b.author"/></td>
-			<td><s:property value="#b.bookConcern"/></td>
-			<td><s:date name="#b.bookDate" format="yyyy-MM-dd"/></td>
-			<td><s:property value="#b.code"/></td>
+			<td><a href="_book_book.action?book.id=<s:property value="id"/>" target="_blank"><s:property value="name"/></a></td>
+			<td><s:property value="author"/></td>
+			<td><s:property value="code"/></td>
+			<td><s:property value="translator"/></td>
+			<td><s:property value="pages"/></td>
 			<td><input type="button" value="删除" onClick="lms_del(<s:property value="id"/>,<s:property value="page.page"/>);"/></td>
 			<td>
-				<s:if test="#b.fileName!=null&&#b.statue==@lms.model.Book@CAN_DOWNLOAD">
-					<a href="download.action?book.id=<s:property value="#b.id"/>" target="_blank">下载</a>
+				<s:if test="fileName!=null&&statue==@lms.model.Book@CAN_DOWNLOAD">
+					<a href="download.action?book.id=<s:property value="id"/>" target="_blank">下载</a>
 				</s:if>
 			</td>
 			<td>
-				<s:if test="#b.swf!=null">
-					<a href="view.action?book.id=<s:property value="#b.id"/>" target="_blank">浏览</a>
+				<s:if test="swf!=null">
+					<a href="view.action?book.id=<s:property value="id"/>" target="_blank">浏览</a>
 				</s:if>
 			</td>
 		</tr>
-		<tr>
-			<td>简介</td>
-			<td colspan="7"><s:property value="#b.desc"/></td>
-		</tr>
+		<%-- <tr>
+			<td><b>出版社</b></td>
+			<td colspan="3"><s:property value="bookConcern"/></td>
+			<td><b>出版日期</b></td>
+			<td colspan="3"><s:date name="bookDate" format="yyyy-MM-dd"/></td>
+		</tr>--%>
 	</s:iterator>
 	</tbody>
 </table>

@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Properties;
 
 import lms.model.Book;
 import lms.model.LmsUser;
@@ -13,6 +14,7 @@ import lms.service.IBookUploadService;
 
 import org.apache.struts2.ServletActionContext;
 
+import util.BookUploadMessageUtil;
 import util.LogUtil;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -32,6 +34,7 @@ public class BookFileAction extends ActionSupport{
 	private Date date;
 	
 	public String save(){
+		BookUploadMessageUtil.begin("文件上传结束,开始执行处理工作");
 		Type[] types = new Type[this.types.length];
 		for(int i=0;i<this.types.length;i++){
 			types[i] = new Type();
@@ -43,14 +46,21 @@ public class BookFileAction extends ActionSupport{
 		book.setCreatedBy(((Manager)ServletActionContext.getRequest().getSession().getAttribute(LmsUser.LOGIN_FLAG)).getLoginName());
 		try {
 			bookUploadService.uploadBook(book, bookFile, bookFileFileName
-					, swf, coverImg, coverImgFileName, types);
+					, swf, coverImg, coverImgFileName, types,null);
 			addActionMessage("图书 "+book.getName()+" 成功添加");
 			LogUtil.userLog("添加图书"+book.getName());
+			BookUploadMessageUtil.finished("成功添加图书 《"+book.getName()+"》");
 		} catch (Exception e) {
 //			e.printStackTrace();
+			BookUploadMessageUtil.finished("转换失败:"+e.getMessage());
 			addActionMessage(e.getMessage());
 		}
 		return SUCCESS;
+	}
+	
+	public String delete(){
+		bookUploadService.delete(book.getId());
+		return "lms_del";
 	}
 	
 	public void validateSave(){

@@ -1,14 +1,18 @@
 package lms.action;
 
-import org.apache.struts2.ServletActionContext;
+import java.util.Date;
 
 import lms.dao.ILmsLogDao;
 import lms.dao.IStudentDao;
 import lms.model.LmsUser;
 import lms.model.Student;
+
+import org.apache.struts2.ServletActionContext;
+
 import util.AuthCodeValidateUtil;
 import util.LmsPage;
 import util.LogUtil;
+import util.Role2StrUtil;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -45,6 +49,24 @@ public class StudentManagerAction extends ActionSupport{
 	
 	public String stu_add(){return "add";}
 	
+	public String stu_edit(){
+		student = studentDao.loadStudent(student.getId());
+		return "edit";
+	}
+	
+	public String stu_update(){
+		Student s = studentDao.loadStudent(student.getId());
+		s.setBirthday(student.getBirthday());
+		s.setName(student.getName());
+		s.setGender(student.getGender());
+		s.setGrade(student.getGrade());
+		s.setPassword(student.getPassword());
+		s.setDownloadCount(student.getDownloadCount());
+		s.setMaxDownloadCount(student.getMaxDownloadCount());
+		studentDao.update(s);
+		return "update";
+	}
+	
 	public String stu_del(){
 		studentDao.delete(student.getId());
 		return "lms_del";
@@ -52,8 +74,11 @@ public class StudentManagerAction extends ActionSupport{
 	
 	public String stu_change(){
 		Student s = studentDao.loadStudent(student.getId());
+		int oldRole = s.getRole();
 		s.setRole(student.getRole());
 		studentDao.update(s);
+		LogUtil.userLog("学生 "+s.getLoginName()+"/"+s.getName()+" 的身份由"+
+				Role2StrUtil.toString(oldRole)+" 转换为 "+Role2StrUtil.toString(s.getRole()));
 		return "change";
 	}
 	
@@ -61,6 +86,11 @@ public class StudentManagerAction extends ActionSupport{
 		if(studentDao.loadStudent(student.getLoginName()) != null){
 			addActionError("登录名已经被占用");
 		}else{
+			student.setLastDownloadDate(new Date());
+			if(student.getMaxDownloadCount() != null){
+				student.setMaxDownloadCount(5);
+			}
+			student.setDownloadCount(0);
 			studentDao.save(student);
 			addActionMessage("登录名为："+student.getLoginName()+" 的学员"+student.getName()+"添加成功");
 			LogUtil.userLog("添加学生"+student.getLoginName());
@@ -75,6 +105,9 @@ public class StudentManagerAction extends ActionSupport{
 		if(studentDao.loadStudent(student.getLoginName()) != null){
 			return "error";
 		}else{
+			student.setLastDownloadDate(new Date());
+			student.setMaxDownloadCount(5);
+			student.setDownloadCount(0);
 			student.setRole(LmsUser.AUDITING);
 			studentDao.save(student);
 			return "success";
@@ -90,6 +123,12 @@ public class StudentManagerAction extends ActionSupport{
 		if(s == null || !s.getPassword().equals(student.getPassword())){
 			addActionError("用户名密码错误");
 			return "error";
+		}
+		Date now = new Date();
+		if(s.getDownloadCount() != 0 && s.getLastDownloadDate()!=null && (s.getLastDownloadDate().getMonth()!= now.getMonth() 
+				|| s.getLastDownloadDate().getYear() != now.getYear())){
+			s.setDownloadCount(0);
+			studentDao.update(s);
 		}
 		ServletActionContext.getRequest().getSession().setAttribute(LmsUser.LOGIN_FLAG, s);
 		LogUtil.userLog("登录系统");

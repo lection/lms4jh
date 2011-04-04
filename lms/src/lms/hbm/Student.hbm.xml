@@ -3,7 +3,7 @@
 	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <hibernate-mapping package="lms.model">
-	<class name="Student" table="t_student">
+	<class name="Student" table="t_student" dynamic-update="true">
 		<id name="id">
 			<generator class="native"/>
 		</id>
@@ -15,7 +15,9 @@
 		<property name="birthday" column="c_birthday" type="date"/>
 		<property name="desc" column="c_desc" type="text" lazy="true"/>
 		<property name="role" column="c_role" not-null="true"/>
-			
+		<property name="lastDownloadDate" column="c_last_download_date"/>
+		<property name="downloadCount" column="c_download_count" not-null="true"/>
+		<property name="maxDownloadCount" column="c_max_download_count" not-null="true"/>
 	</class>
 	
 </hibernate-mapping>

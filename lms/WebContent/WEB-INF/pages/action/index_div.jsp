@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@taglib uri="/struts-tags" prefix="s"%>
-
+<s:set name="lmsUser" value="#session[@lms.model.LmsUser@LOGIN_FLAG]"></s:set>
+<s:set name="isLogin" value="#session[@lms.model.LmsUser@LOGIN_FLAG]!=null"></s:set>
 <TABLE border="1" style="text-align: center;" cellSpacing=0 cellPadding=0 width=590 
       border=0>
       	<thead>
@@ -27,7 +28,7 @@
         		<s:if test="#lmsUser.role!=@lms.model.LmsUser@SCHOOLFELLOW">
         		<td>
         			<s:if test="#b.fileName!=null&&#b.statue==@lms.model.Book@CAN_DOWNLOAD">
-						<a href="download.action?book.id=<s:property value="#b.id"/>" target="_blank">下载</a>
+						<a href="javascript:void(0);" onClick="fn_can_download(<s:property value="#b.id"/>)">下载</a>
 					</s:if>
 				</td>
 				</s:if>

@@ -5,19 +5,19 @@
 <%@page import="lms.model.LmsUser"%><table width="100%" border="1">
 	<thead>
 		<tr>
-			<th>登录名</th>
-			<th>姓名</th>
-			<th>性别</th>
-			<th>入学年份</th>
-			<th>生日</th>
-			<th>状态</th>
-			<th>操作</th>
+			<th width="100">登录名</th>
+			<th width="100">姓名</th>
+			<th width="50">性别</th>
+			<th width="100">入学年份</th>
+			<th width="100">生日</th>
+			<th width="100">状态</th>
+			<th width="150">操作</th>
 		</tr>
 	</thead>
 	<tbody>
 	<s:iterator value="page.content">
 		<tr>
-			<td><s:property value="loginName"/></td>
+			<td><a href="stu_edit.action?student.id=<s:property value="id"/>"><s:property value="loginName"/></a></td>
 			<td><s:property value="name"/></td>
 			<td><s:property value="gender==0?'男':'女'"/></td>
 			<td><s:property value="grade"/></td>

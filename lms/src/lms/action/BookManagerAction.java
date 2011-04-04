@@ -74,11 +74,6 @@ public class BookManagerAction extends ActionSupport{
 		return "add";
 	}
 	
-	public String book_del(){
-		bookDao.deleteById(book.getId());
-		return "lms_del";
-	}
-	
 	public String book_book(){
 		book = bookDao.getBookById(book.getId());
 		return "book";

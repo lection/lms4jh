@@ -13,6 +13,9 @@ public class Student implements LmsUser{
 	private Date birthday;
 	private String desc;
 	private Integer role;
+	private Date lastDownloadDate;
+	private Integer	downloadCount;
+	private Integer maxDownloadCount;
 	
 	public Student() {
 	}
@@ -97,6 +100,30 @@ public class Student implements LmsUser{
 	@Override
 	public long getUserId() {
 		return getId();
+	}
+
+	public Date getLastDownloadDate() {
+		return lastDownloadDate;
+	}
+
+	public void setLastDownloadDate(Date lastDownloadDate) {
+		this.lastDownloadDate = lastDownloadDate;
+	}
+
+	public Integer getDownloadCount() {
+		return downloadCount;
+	}
+
+	public void setDownloadCount(Integer downloadCount) {
+		this.downloadCount = downloadCount;
+	}
+
+	public Integer getMaxDownloadCount() {
+		return maxDownloadCount;
+	}
+
+	public void setMaxDownloadCount(Integer maxDownloadCount) {
+		this.maxDownloadCount = maxDownloadCount;
 	}
 	
 }

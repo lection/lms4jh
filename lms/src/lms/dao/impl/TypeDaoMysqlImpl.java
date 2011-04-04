@@ -12,6 +12,7 @@ import lms.dao.ITypeDao;
 import lms.model.Type;
 
 public class TypeDaoMysqlImpl extends JdbcDaoSupport implements ITypeDao {
+	
 	private RowMapper rowMapper = new RowMapper(){
 		@Override
 		public Object mapRow(ResultSet rs, int arg1) throws SQLException {

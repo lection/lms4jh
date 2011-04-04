@@ -1,19 +1,19 @@
 package lms.action;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
+import lms.dao.IBookDao;
+import lms.dao.IStudentDao;
+import lms.model.Book;
+import lms.model.LmsUser;
+import lms.model.Student;
+import lms.service.IBookUploadService;
+
 import org.apache.struts2.ServletActionContext;
 
 import util.LogUtil;
-
-import lms.dao.IBookDao;
-import lms.model.Book;
-import lms.model.LmsUser;
-import lms.service.IBookUploadService;
 
 import com.mchange.v2.resourcepool.ResourcePool.Manager;
 import com.opensymphony.xwork2.ActionSupport;
@@ -25,12 +25,25 @@ public class DownloadBookAction extends ActionSupport {
 	private Book book;
 	private String fileName;
 	private IBookDao bookDao;
+	private IStudentDao studentDao;
 	private IBookUploadService bookUploadService;
 	
 	public String execute() throws FileNotFoundException,UnsupportedEncodingException{
 		book = bookDao.getBookById(book.getId());
 		LmsUser user = (LmsUser)ServletActionContext.getRequest().getSession().getAttribute(LmsUser.LOGIN_FLAG);
-		if(book.getStatue() == Book.CAN_DOWNLOAD || (user != null && user.getClass().equals(Manager.class))){
+		if(user.getRole() == LmsUser.AUDITING || user.getRole() == LmsUser.SCHOOLFELLOW){
+			return "fileNotFound";
+		}
+		if(user.getRole() == LmsUser.STUDENT){
+			Student student = (Student)user;
+			if(student.getMaxDownloadCount() <= student.getDownloadCount()){
+				return "fileNotFound";
+			}else{
+				student.setDownloadCount(student.getDownloadCount()+1);
+				studentDao.updateDownloadCount(student.getId(), student.getDownloadCount());
+			}
+		}
+		if(book.getStatue() == Book.CAN_DOWNLOAD || (user != null && user.getClass()==Manager.class)){
 //			stream = 
 //				new FileInputStream(new File(fileDir,book.getFileName()));
 			
@@ -67,5 +80,9 @@ public class DownloadBookAction extends ActionSupport {
 
 	public void setBookUploadService(IBookUploadService bookUploadService) {
 		this.bookUploadService = bookUploadService;
+	}
+
+	public void setStudentDao(IStudentDao studentDao) {
+		this.studentDao = studentDao;
 	}
 }

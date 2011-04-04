@@ -21,4 +21,5 @@ public interface IStudentDao {
 	List<Student> listStudent(Student student,int start,int size);
 	Student loadStudent(long id);
 	Student loadStudent(String loginName);
+	public void updateDownloadCount(Long id,int count);
 }

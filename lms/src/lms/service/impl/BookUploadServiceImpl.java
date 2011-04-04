@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.Properties;
 import java.util.UUID;
 
 import lms.dao.IBookDao;
@@ -17,18 +18,22 @@ import lms.service.IBookUploadService;
 import org.apache.commons.io.FileUtils;
 
 import util.ITypeConver;
-
-public class BookUploadServiceImpl implements IBookUploadService{
+/**
+ * 该类已被BookUploadServiceSegmentsImpl取代
+ * @author lection
+ *
+ */
+public abstract class BookUploadServiceImpl implements IBookUploadService{
 	
-	private String swfDir;
-	private String bookDir;
-	private String imgDir;
-	private ITypeConver conver;
-	private IBookDao bookDao;
+	protected String swfDir;
+	protected String bookDir;
+	protected String imgDir;
+	protected ITypeConver conver;
+	protected IBookDao bookDao;
 
 	@Override
 	public void uploadBook(Book book, File bookFile, String postfix, File swf,
-			File coverImg,String imgFix,Type[] types) throws Exception{
+			File coverImg,String imgFix,Type[] types,Properties prop) throws Exception{
 		String fileId = UUID.randomUUID().toString();
 		File newBook = null;
 		File newCoverImg = null;
@@ -52,9 +57,7 @@ public class BookUploadServiceImpl implements IBookUploadService{
 				newSwf =  new File(swfDir,book.getSwf());
 				FileUtils.copyFile(swf, newSwf);
 			}else if(newBook != null){
-				if(conver.conver(postfix,newBook,fileId,swfDir)){
-					book.setSwf(fileId+".swf");
-				}
+				conver.conver(postfix,newBook,fileId,swfDir,book,null);
 			}
 			bookDao.save(book);
 		}catch(Exception se){
@@ -63,9 +66,17 @@ public class BookUploadServiceImpl implements IBookUploadService{
 		}
 	}
 	
-	private void deleteFile(File[] files){
+	protected void deleteFile(File[] files){
 		for(File f:files){
-			if(f != null)f.delete();
+			if(f != null){
+				if(f.isDirectory()){
+					File[] subFiles = f.listFiles();
+					for(File sf:subFiles){
+						sf.delete();
+					}
+				}
+				f.delete();
+			}
 		}
 	}
 
@@ -75,13 +86,14 @@ public class BookUploadServiceImpl implements IBookUploadService{
 	}
 
 	@Override
-	public InputStream viewSWF(String fileName) throws FileNotFoundException{
-		return new FileInputStream(new File(swfDir,fileName));
+	public InputStream viewSWF(String fileName,int seg) throws FileNotFoundException{
+		return new FileInputStream(new File(new File(swfDir,fileName),seg+".swf"));
 	}
 
 	@Override
+	//暂时不实现替换文件功能,只更新book信息。
 	public void updateBook(Book book, File bookFile, String fileType, File swf,
-			File coverImg,String imgFix, Type[] types) {
+			File coverImg,String imgFix, Type[] types,Properties prop) {
 		
 	}
 
@@ -116,4 +128,5 @@ public class BookUploadServiceImpl implements IBookUploadService{
 	public void setBookDao(IBookDao bookDao) {
 		this.bookDao = bookDao;
 	}
+
 }

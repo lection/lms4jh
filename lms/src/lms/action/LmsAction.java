@@ -7,6 +7,7 @@ import lms.dao.ITypeDao;
 import lms.model.Book;
 import lms.model.Type;
 import util.LmsPage;
+import util.LogUtil;
 
 public class LmsAction {
 	private IBookDao bookDao;
@@ -63,6 +64,15 @@ public class LmsAction {
 		page = new LmsPage(pageNum,pageSize,bookDao.getTotal(type));
 		page.setContent(bookDao.listBook(page.getStart(), page.getPageSize(), type));
 		return "div";
+	}
+	
+	public String viewBookSeg(){
+		book = bookDao.getBookById(book.getId());
+		if(book == null){
+			return "input";
+		}
+		LogUtil.userLog("阅读图书《"+book.getName()+"》");
+		return "success";
 	}
 
 	public void setBookDao(IBookDao bookDao) {

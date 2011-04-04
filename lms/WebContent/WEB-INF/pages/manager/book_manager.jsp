@@ -13,7 +13,7 @@ $(function(){
 });
 function lms_del(id,page){
 	if(confirm("确认删除这本图书吗？")){
-		$("#book_list_div").load("_book_del.action?book.id="+id+"&pageNum="+page);
+		$("#book_list_div").load("_bookfile_delete.action?book.id="+id+"&pageNum="+page);
 	}
 }
 </script>

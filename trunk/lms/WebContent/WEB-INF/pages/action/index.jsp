@@ -4,7 +4,7 @@
 <s:set name="isLogin" value="#session[@lms.model.LmsUser@LOGIN_FLAG]!=null"></s:set>
 <HTML>
 <HEAD>
-<TITLE>图书馆</TITLE>
+<TITLE>学院图书馆</TITLE>
 <LINK href="css/main.css" type=text/css rel=stylesheet>
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/jquery-ui.js"></script>

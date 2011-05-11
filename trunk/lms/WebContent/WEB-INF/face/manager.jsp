@@ -14,8 +14,6 @@
 <d:head/>
 </head>
 <body>
-<h1>管理后台</h1>
-访问地址http://<%=InetAddress.getLocalHost().getHostAddress()%>
 <hr/>
 <div id="manager">
 	<div id="manager_left">

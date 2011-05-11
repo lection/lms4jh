@@ -55,7 +55,7 @@ public class BookFileAction extends ActionSupport{
 			BookUploadMessageUtil.finished("转换失败:"+e.getMessage());
 			addActionMessage(e.getMessage());
 		}
-		return SUCCESS;
+		return null;
 	}
 	
 	public String delete(){

@@ -1,12 +1,13 @@
 package lms.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
-public class Book {
+public class Book implements Serializable{
 	public static final int ONLY_READ = 1;
 	public static final int CAN_DOWNLOAD = 2;
 	

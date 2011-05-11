@@ -14,6 +14,10 @@
 #add_book_form tr{
 	height: 25px;
 }
+/*移除关闭按钮*/
+.ui-dialog-titlebar-close{
+    display: none;
+}
 </style>
 <SCRIPT type="text/javascript">
 	$(function() {
@@ -47,8 +51,18 @@
 				alert("图书至少要选择一个分类");
 				return false;
 			}
+			$( "#dialog-message" ).dialog({
+				modal: true,
+				width: 600,
+				height:400
+			});
+			upMsg();
 		});
 		$("#book_name").change(fn_pinyin);
+		$("#add_btn").click(function(){
+			$("#add_book_form").submit();
+			
+		});
 	});
 	function fn_pinyin(){
 		var param = {s:$(this).val()};
@@ -57,6 +71,23 @@
 			$("#py").val(data.py);
 		});
 	}
+	function upMsg(){
+		$.getJSON("upMsg.action",function(data){
+			var msgDiv = $("#msgDiv");
+			for(var i=0;i<data.length;i++){
+				if(data[i].status){
+					msgDiv.append(data[i].message+"<br/>");
+					if(data[i].status == "finished"){
+						msgDiv.append("<a href='book_add.action'>继续添加图书</a>");
+						return;
+					}
+					msgDiv.scrollTop=(msgDiv.scrollHeight-msgDiv.clientHeight);
+				}
+			}
+			setTimeout("upMsg()",700);
+		});
+	}
+	<%--
 	function fn_can_edit(id){
 		var input=$("#"+id);
 		if(input.attr("readonly")){
@@ -66,15 +97,22 @@
 			input.attr("readonly","readonly");
 			input.css("background-color","silver");
 		}
-	}
+	}--%>
 </SCRIPT>
 </head>
 <body>
+	<div id="dialog-message" title="图书添加" style="display: none;">
+		<div id="msgDiv" style="width: 95%;height:95%;">
+			图书正在上传处理，请勿关闭进行其他操作。图书正在上传处理，请勿关闭进行其他操作。
+		</div>
+	</div>
+	<iframe width="0" height="0" name="book_upload_iframe" style="border: 0"></iframe>
+
 	<h4>添加图书</h4>
 	<s:actionmessage/>
 	<s:fielderror/>
 	<s:actionerror/>
-	<form id="add_book_form" action="bookfile_save.action" method="post" enctype="multipart/form-data">
+	<form id="add_book_form" action="bookfile_save.action" method="post" enctype="multipart/form-data" target="book_upload_iframe">
 	<table width="95%">
 		<thead></thead>
 		<tbody>
@@ -108,13 +146,11 @@
 			</tr>
 			<tr>
 				<td>拼音</td>
-				<td><input id="pinyin" style="background-color: silver;" name="book.fullPinYin" type="text" readonly="readonly" size="15"/>
-				<label><input type="checkbox" onClick="fn_can_edit('pinyin')"/>修改</label></td>
+				<td><input id="pinyin" style="background-color: silver;" name="book.fullPinYin" type="text" size="15"/></td>
 			</tr>
 			<tr>
 				<td>拼音缩写</td>
-				<td><input id="py" style="background-color: silver;" readonly="readonly" name="book.pinYin" type="text" size="10"/>
-				<label><input type="checkbox" onClick="fn_can_edit('py')"/>修改</label></td>
+				<td><input id="py" style="background-color: silver;" name="book.pinYin" type="text" size="10"/></td>
 			</tr>
 			<tr>
 				<td>是否允许下载</td>
@@ -151,7 +187,7 @@
 				<td><textarea cols="30" rows="3" name="book.desc"></textarea></td>
 			</tr>
 			<tr>
-				<td><input type="submit" value="添加"/></td>
+				<td><input type="button" id="add_btn" value="添加图书"/></td>
 				<td><input type="reset" value="重置"/></td>
 			</tr>
 		</tbody>

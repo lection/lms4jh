@@ -63,7 +63,7 @@
 			</tr>
 			<tr>
 				<td colspan="2">
-				<s:if test="isLogin"><s:if test="#lmsUser.role==@lms.model.LmsUser@MANAGER"><a href="_book_edit">编辑</a></s:if></s:if>
+				<s:if test="isLogin"><s:if test="#lmsUser.role==@lms.model.LmsUser@MANAGER"><a href="_book_edit.action?book.id=<s:property value="book.id"/>">编辑</a></s:if></s:if>
 				&nbsp;&nbsp;&nbsp;<a href="download.action?book.id=<s:property value="book.id"/>" target="_blank">下载</a>
 				&nbsp;&nbsp;&nbsp;<a href="view.action?book.id=<s:property value="book.id"/>" target="_blank">浏览</a>
 			</td>

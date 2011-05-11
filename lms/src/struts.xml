@@ -32,7 +32,7 @@
 		</action>
 	</package>
 	
-	<package name="manager" extends="struts-default"><interceptors>
+	<package name="manager" extends="json-default"><interceptors>
 		<interceptor name="loginInterceptor"
 			 class="lms.filter.ManagerLoginInterceptor">
 			</interceptor>
@@ -68,6 +68,11 @@
 			<result name="list_div">/WEB-INF/pages/manager/book_manager_div.jsp</result>
 			<result name="add">/WEB-INF/pages/manager/addBook.jsp</result>
 		</action>
+		<action name="upMsg" class="lms.action.BookUploadMessageAction">
+			<result type="json">
+				<param name="root">json</param>
+			</result>
+		</action>
 		<action name="stu_*" class="lms.action.StudentManagerAction" method="stu_{1}">
 			<result name="manager">/WEB-INF/pages/manager/student_manager.jsp</result>
 			<result name="add">/WEB-INF/pages/manager/addStudent.jsp</result>
@@ -82,6 +87,7 @@
 		<action name="_book_*" class="lms.action.BookManagerAction" method="book_{1}">
 			<result name="list_div">/WEB-INF/pages/manager/book_manager_div.jsp</result>
 			<result name="book">/WEB-INF/pages/action/book.jsp</result>
+			<result name="edit">/WEB-INF/pages/manager/editBook.jsp</result>
 		</action>
 		<action name="_bookfile_delete" class="lms.action.BookFileAction" method="delete">
 		</action>

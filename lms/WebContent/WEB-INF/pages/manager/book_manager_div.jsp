@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="s" uri="/struts-tags" %>
-<table width="100%" border="1">
+<table width="100%">
 	<thead>
 		<tr>
-			<th width="200">书名</th>
-			<th width="150">作者</th>
-			<th width="100">编码</th>
-			<th width="100">译者</th>
+			<th width="100">书名</th>
+			<th width="100">作者</th>
+			<th width="50">编码</th>
+			<th width="60">译者</th>
 			<th width="50">页数</th>
 			<th width="50">操作</th>
 			<th width="50">下载</th>

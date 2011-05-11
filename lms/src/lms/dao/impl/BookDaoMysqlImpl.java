@@ -62,7 +62,7 @@ public class BookDaoMysqlImpl extends JdbcDaoSupport implements IBookDao{
 			"select count(b.c_id) from t_book as b,t_book_type as bt"
 			+DSQLUtil.SQL_SPLIT+" and b.c_id=bt.c_book_id",columnNames);
 	private DSQLUtil listBookUtil = new DSQLUtil(
-			"select distinct b.* from t_book as b,t_book_type as bt"+DSQLUtil.SQL_SPLIT+" and b.c_id=bt.c_book_id"
+			"select distinct b.* from t_book as b,t_book_type as bt"+DSQLUtil.SQL_SPLIT+" and b.c_id=bt.c_book_id  order by b.c_id desc"
 			,columnNames);
 	
 	private static final String[] columnNamesWithOutType = {
@@ -118,7 +118,7 @@ public class BookDaoMysqlImpl extends JdbcDaoSupport implements IBookDao{
 	public List<Book> listBook(int start,int size) {
 		try{
 			return (List<Book>)getJdbcTemplate()
-			.query("select "+BOOK_COLUMN+" from t_book limit ?,?"
+			.query("select "+BOOK_COLUMN+" from t_book order by c_id desc limit ?,?"
 			, new Object[]{start,size},rowMapper);
 		}catch(Exception ex){
 			ex.printStackTrace();
@@ -131,7 +131,7 @@ public class BookDaoMysqlImpl extends JdbcDaoSupport implements IBookDao{
 	public List<Book> listBook(int start, int size, Type type) {
 		try{
 			return (List<Book>)getJdbcTemplate()
-			.query("select "+BOOK_COLUMN+" from t_book as b,t_book_type as bt where bt.c_type_id=? and c_book_id=b.c_id limit ?,?"
+			.query("select "+BOOK_COLUMN+" from t_book as b,t_book_type as bt where bt.c_type_id=? and c_book_id=b.c_id order by b.c_id desc limit ?,?"
 			, new Object[]{type.getId(),start,size},rowMapper);
 		}catch(Exception ex){
 			ex.printStackTrace();

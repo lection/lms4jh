@@ -13,6 +13,14 @@
         book.swf="<s:property value="book.swf"/>";view(1);
         });
         </script>
+        <style type="text/css">
+        	ul li a{
+        		cursor: pointer;
+        	}
+        	ul li a:HOVER {
+				color: red;
+			}
+        </style>
     </head> 
     <body> 
     <table width="70%" border="1" align="center">
@@ -24,9 +32,11 @@
     	<tr>
     		<td valign="top" id="content_td"></td>
     		<td>
-    			<ul>
+    		<div style="width:100px;height:450px; overflow:scroll; border:1px solid;">
+    			<ul style="list-style: none;">
     				<s:property value="@util.BookSegToStringUtil@toLiTags(book)" escape="false"/>
     			</ul>
+    		</div>
     		</td>
     	</tr>
     </table>

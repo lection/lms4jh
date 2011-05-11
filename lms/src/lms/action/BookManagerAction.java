@@ -1,11 +1,17 @@
 package lms.action;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import lms.dao.IBookDao;
 import lms.dao.ITypeDao;
 import lms.model.Book;
 import lms.model.Type;
+
+import org.apache.struts2.ServletActionContext;
+
+import util.BookUploadMessageUtil;
 import util.LmsPage;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -70,12 +76,42 @@ public class BookManagerAction extends ActionSupport{
 	}
 	
 	public String book_add(){
+		BookUploadMessageUtil.clean();
 		types = typeDao.listType();
 		return "add";
+	}
+	public String book_edit(){
+		types = typeDao.listType();
+		book = bookDao.getBookById(book.getId());
+		return "edit";
 	}
 	
 	public String book_book(){
 		book = bookDao.getBookById(book.getId());
+		return "book";
+	}
+	
+	public String book_update(){
+		Book b = bookDao.getBookById(book.getId());
+		b.setName(book.getName());
+		b.setAuthor(book.getAuthor());
+		b.setTranslator(book.getTranslator());
+		b.setBookConcern(book.getBookConcern());
+		b.setBookDate(book.getBookDate());
+		b.setCode(book.getCode());
+		b.setDesc(book.getDesc());
+		b.setFullPinYin(book.getFullPinYin());
+		b.setPinYin(book.getPinYin());
+		b.setStatue(book.getStatue());
+		String[] typeValues = ServletActionContext.getRequest().getParameterValues("types");
+		if(typeValues != null){
+			Type[] newTypes = new Type[typeValues.length];
+			for(int i=0;i<typeValues.length;i++){
+				newTypes[i]=typeDao.loadType(Integer.parseInt(typeValues[i]));
+			}
+		}
+		bookDao.update(b);
+		book = b;
 		return "book";
 	}
 

@@ -1,20 +1,81 @@
 html,body,*{
 	margin: 0px;
 	padding: 0px;
+    color: #333;
+    font: 12px verdana, arial, helvetica, sans-serif;
+}
+a:link, a:visited, a:hover {
+    color: #666;
+    font-weight: bold;
+    text-decoration: none;
+}
+input, select, textarea {
+    background-color: #fcfcfc;
+    border: 1px solid #ccc;
+    font: 12px verdana, arial, helvetica, sans-serif;
+    margin: 2px 0;
+    padding: 2px 4px;
+}
+select {
+   padding: 2px 2px 2px 0;
+}
+textarea {
+	width: 250px;
+	height: 150px;
+	vertical-align: top;
+}
+
+input:focus, select:focus, textarea:focus {
+    border: 1px solid #b2d1ff;
+}
+table {
+    border: 1px solid #ccc;
+
+}
+tr {
+    border: 0;
+}
+td, th { 
+    font: 12px verdana, arial, helvetica, sans-serif;
+    line-height: 14px;
+    padding: 5px 6px;
+    text-align: left;
+    vertical-align: top;
+}
+th {
+    background: #fff url(../images/skin/shadow.jpg);
+    color: #666;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 17px;
+    padding: 2px 6px;
+}
+th a:link, th a:visited, th a:hover {
+    color: #333;
+    display: block;
+    font-size: 12px;
+    text-decoration: none;
+    width: 100%;
+}
+.odd {
+    background: #f7f7f7;
 }
 #manager div{
 	padding: 15px;
 	margin: 10px;
 }
 #manager_left{
-	border:1px solid silver;
-	width:200px;
+	width:12%;
 	float: left;
+	margin: 12px;
+	border: 1px solid #CCCCCC;
+	background-color: #F1F1F1;
 }
 #manager_left ul{
 	list-style-type: none;
 }
 #manager_content{
-	border:1px solid silver;
 	float:left;
+	width:70%;
+	border-left:dashed 1px;
 }

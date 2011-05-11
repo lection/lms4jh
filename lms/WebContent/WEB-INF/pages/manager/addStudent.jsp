@@ -75,7 +75,7 @@ $(function() {
 			</tr>
 			<tr>
 				<td width="35%">生日</td>
-				<td width="65%"><input id="datepicker" name="student.birthday" type="text" size="30" readonly="readonly"/></td>
+				<td width="65%"><input id="datepicker" name="student.birthday" type="text" size="30"  value="1990-01-01"/></td>
 			</tr>
 			<tr>
 				<td width="35%">角色状态</td>

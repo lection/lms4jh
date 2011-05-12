@@ -26,12 +26,8 @@
 			</tr>	
 			<tr>
 				<td colspan="2">
-					<table>
-						<tr>
-							<td><input type="submit" value="登录"/></td>
-							<td><input type="reset"/></td>
-						</tr>
-					</table>
+					<input type="submit" value="登录"/>
+					<input type="reset"/>
 				</td>
 			</tr>		
 		</tbody>

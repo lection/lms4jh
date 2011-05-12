@@ -5,7 +5,7 @@
 <HTML>
 <HEAD>
 <TITLE>学院图书馆</TITLE>
-<LINK href="css/main.css" type=text/css rel=stylesheet>
+<LINK href="css/main2.css" type=text/css rel=stylesheet>
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/jquery-ui.js"></script>
 <script type="text/javascript" src="js/lms_page.js"></script>

@@ -2,7 +2,7 @@
 <%@taglib uri="/struts-tags" prefix="s"%>
 <s:set name="lmsUser" value="#session[@lms.model.LmsUser@LOGIN_FLAG]"></s:set>
 <s:set name="isLogin" value="#session[@lms.model.LmsUser@LOGIN_FLAG]!=null"></s:set>
-<TABLE border="1" style="text-align: center;" cellSpacing=0 cellPadding=0 width=590 
+<TABLE border="1" style="text-align: center;" cellSpacing=0 cellPadding=0 width=570 
       border=0>
       	<thead>
       		<tr style="font-weight: bold">
@@ -42,10 +42,9 @@
        	</s:iterator>
         </TBODY>
 	</TABLE>
-      <TABLE cellSpacing=0 cellPadding=5 width="100%" border=0>
-        <TBODY>
-           <TR align="center">
-           <TD height=20>
+	<div id="pagination">
+            共有 <s:property value="page.pageTotal"/> 页 当前为第 <s:property value="page.page"/> 页 
+     &nbsp;&nbsp;此类共有<s:property value="page.total"/>本书<br/>
 	<s:if test="page.page!=1"><a onClick="lmsPageUtil.go(1)">首页</a></s:if>
     <s:else>首页 </s:else>
           | 
@@ -58,7 +57,4 @@
             | 
     <s:if test="page.page!=page.pageTotal"><a onClick="lmsPageUtil.go(<s:property value="page.pageTotal"/>)">末页</a></s:if>
     <s:else>末页 </s:else>
-            共有 <s:property value="page.pageTotal"/> 页 当前为第 <s:property value="page.page"/> 页 
-     <input type="text" id="lms_pageNum" size="4"/><input type="button" value="跳转" onClick="lmsPageUtil.go();"/>
-     &nbsp;&nbsp;此类共有<s:property value="page.total"/>本书
-     </TD></TR></TBODY></TABLE>
+    <input type="text" id="lms_pageNum" size="4"/><input type="button" value="跳转" onClick="lmsPageUtil.go();"/></div>

@@ -41,15 +41,9 @@
     <bean id="lmsLogDao" class="lms.dao.impl.LmsLogDaoHbImpl"/>
     <!-- Service -->
     <bean id="bookUploadService" class="lms.service.impl.BookUploadServiceSegmentsImpl">
-    	<property name="bookDir">
-    		<value>E:\test\book</value>
-    	</property>
-    	<property name="imgDir">
-    		<value>E:\test\image</value>
-    	</property>
-    	<property name="swfDir">
-    		<value>E:\test\swf</value>
-    	</property>
+    	<property name="bookDir" ref="bookDir"></property>
+    	<property name="imgDir" ref="imgDir"></property>
+    	<property name="swfDir" ref="swfDir"></property>
     </bean>
 	<!--Book HiloUtil-->
 	<bean id="hiloUtil" class="util.HiloUtil"/>
@@ -58,5 +52,25 @@
 			<value>D:\Program Files\SWFTools\pdf2swf.exe</value>
 		</property>
 		<property name="definition" value="20"></property>
+	</bean>
+	<!-- BookPass -->
+	<bean id="receiver" class="lms.carry.BookReceiver">
+		<property name="port" value="9527"></property>
+		<property name="bookDir" ref="bookDir"></property>
+    	<property name="swfDir" ref="swfDir"></property>
+	</bean>
+	<bean id="sender" class="lms.carry.BookSender">
+		<property name="bookDir" ref="bookDir"></property>
+    	<property name="swfDir" ref="swfDir"></property>
+	</bean>
+	<!-- native file path -->
+	<bean id="bookDir" class="java.lang.String">
+		<constructor-arg value="E:\test\book"></constructor-arg>
+	</bean>
+	<bean id="imgDir" class="java.lang.String">
+		<constructor-arg value="E:\test\image"></constructor-arg>
+	</bean>
+	<bean id="swfDir" class="java.lang.String">
+		<constructor-arg value="E:\test\swf"></constructor-arg>
 	</bean>
 </beans>

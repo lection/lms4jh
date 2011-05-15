@@ -15,7 +15,7 @@ public class LmsAction {
 	private List<Type> listType;
 	private LmsPage page;
 	private int pageNum=1;
-	private int pageSize = 12;
+	private int pageSize = 18;
 	private Integer typeId;
 	private Book book;
 	

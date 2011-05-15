@@ -54,21 +54,27 @@ function fn_can_download(bid){
 	<div id="main">
 		<div id="header">
 			<div id="title">
-			  <div class="title">中华圣道神学院图书馆</div>
+			  <div class="title"><a href="<%=request.getContextPath() %>">中华圣道神学院图书馆</a></div>
 			  <div class="subtitle">English Name</div>
 			</div>
 			
 		</div>
 		<div id="lpanel">
 		  <div class="heading">欢迎访问</div>
-		  		欢迎访问在线图书馆
 		  		<s:if test="isLogin">
+		  		欢迎访问在线图书馆<br/>
             		用户:<s:property value="#lmsUser.getUserName()"/>&nbsp;&nbsp;
             		<s:property value="@util.Role2StrUtil@toString(#lmsUser.getRole())"/>&nbsp;&nbsp;
             		<a href="userLogout.action">退出</a>
             	</s:if>
             	<s:else>
-            		<a href="user_login.jsp">登录</a>&nbsp;&nbsp;<a href="user_register.jsp">注册</a>
+            	<form id="login_form" action="userLogin.action" method="post">
+            		用户名<br/><input name="student.loginName" type="text"/><br/>
+            		密码<br/><input name="student.password" type="password"/><br/>
+            		注册码<img src="authCode.jsp"/><br/>
+            		<input type="text" name="lms_authCode"/><br/>
+            		<a onclick="$('#login_form').submit();">登录</a>&nbsp;&nbsp;<a href="user_register.jsp">注册</a>
+            	</form>
             	</s:else>
 		  <div class="heading">图书分类</div>
 		  <a onClick="fn_reset();">全部图书</a><br/>
@@ -102,8 +108,8 @@ function fn_can_download(bid){
 	     </div>
 		</div>
 		<div id="footer">
-		  <div>&copy; Copyright 2009 </div>
-		  <div>This page has been validated for XHTML 1.0 Strict</a></div>
+		  <div>中华圣道神学院图书馆&nbsp;&nbsp;<a href="manager_manager.action">管理后台</a></div>
+		  <div>English Name</div>
 		</div>
 		<div>&nbsp;</div>
 	</div>

@@ -14,25 +14,44 @@
         });
         </script>
         <style type="text/css">
-        	ul li a{
-        		cursor: pointer;
+        	body{
+        		background-color: #EEEEEE;
         	}
-        	ul li a:HOVER {
-				color: red;
+        	h3{
+        		background-color: green;
+        		padding: 10px;
+        		color: white;
+        	}
+        	ul{
+        		padding-left: 10px;
+        	}
+        	ul li a{
+        		color: #333;
+				cursor:pointer;
+				text-decoration: none;
+				font-weight: bold;
+				padding-left: 15px;
+				background: url(images/b-1.gif) no-repeat center left;
+        	}
+        	ul li a:hover {
+				color: #690;
+  				background: url(images/b-2.gif) no-repeat center left;
+			}
+			td{
+				background-color: white;
 			}
         </style>
     </head> 
     <body> 
-    <table width="70%" border="1" align="center">
+    <table width="820" cellpadding="0" cellspacing="0" align="center">
     	<tr>
-    		<td colspan="2">
-    			书名:<s:property value="book.name"/>
-    		</td>
+    		<td width="700"><h3>《<s:property value="book.name"/>》</h3></td>
+    		<td></td>
     	</tr>
     	<tr>
     		<td valign="top" id="content_td"></td>
     		<td>
-    		<div style="width:100px;height:450px; overflow:scroll; border:1px solid;">
+    		<div style="width:120px;height:450px; overflow:scroll; border:1px solid;overflow-x:hidden;border: 0px;">
     			<ul style="list-style: none;">
     				<s:property value="@util.BookSegToStringUtil@toLiTags(book)" escape="false"/>
     			</ul>

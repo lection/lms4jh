@@ -14,6 +14,7 @@ import lms.model.Book;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
+import static util.BookUploadMessageUtil.*;
 
 public class BookSender {
 	
@@ -21,8 +22,10 @@ public class BookSender {
 	private String bookDir;
 	private String swfDir;
 	
-	public void sender(String ip,int port) {
-		List<Book> listBook = bookDao.listBook(bookDao.getTotal()-10, bookDao.getTotal()+1);
+	public void sender(String ip,int port,boolean flag) throws Exception{
+		int total = bookDao.getTotal();
+		List<Book> listBook = bookDao.listBook(0, total+1);
+		message("图书查询,共"+total+"本图书。");
 		Socket socket = null;
 		ObjectOutputStream oos = null;
 		InputStream is = null;
@@ -33,10 +36,17 @@ public class BookSender {
 				oos = new ObjectOutputStream(socket.getOutputStream());
 				is = socket.getInputStream();
 				oos.writeObject(book);
+				if(is.read()==2){
+					message("《"+book.getName()+"》图书已经入库，不进行传输。");
+					continue;
+				}else{
+					message("《"+book.getName()+"》图书开始传输。");
+				}
 				File pdf = new File(bookDir,book.getFileName());
+				System.out.println(pdf.getAbsolutePath());
 				if(pdf.exists()){
 					oos.writeObject(pdf.length());
-					sendBook(pdf,oos);
+					sendBook(pdf,oos,flag);
 					oos.flush();
 				}else{
 					oos.writeObject(new Long(-1));
@@ -48,7 +58,7 @@ public class BookSender {
 						swf = new File(new File(swfDir,book.getSwf()),i+".swf");
 						if(swf.exists()){
 							oos.writeObject(swf.length());
-							sendBook(swf,oos);
+							sendBook(swf,oos,flag);
 							oos.flush();
 						}else{
 							oos.writeObject(new Long(-1));
@@ -56,9 +66,11 @@ public class BookSender {
 						is.read();
 					}
 				}
+				message("《"+book.getName()+"》图书顺利传输。");
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
+			throw ex;
 		}finally{
 			try {
 				is.close();
@@ -72,7 +84,7 @@ public class BookSender {
 		}
 	}
 	
-	private void sendBook(File file,OutputStream os) throws IOException{
+	private void sendBook(File file,OutputStream os,boolean flag) throws IOException{
 		FileInputStream fis = new FileInputStream(file);
 		int i = -1;
 		byte[] buffer = new byte[8*1024];
@@ -80,7 +92,9 @@ public class BookSender {
 			os.write(buffer, 0, i);
 		}
 		fis.close();
-		file.delete();
+		if(flag){
+			file.delete();
+		}
 	}
 
 	public IBookDao getBookDao() {
@@ -113,6 +127,6 @@ public class BookSender {
 		sender.setBookDao((IBookDao)context.getBean("bookDao"));
 		sender.setBookDir("E:\\test\\book");
 		sender.setSwfDir("E:\\test\\swf");
-		sender.sender("127.0.0.1", 9527);
+		sender.sender("127.0.0.1", 9527,false);
 	}
 }

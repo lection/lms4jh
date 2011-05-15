@@ -10,6 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import lms.dao.IBookDao;
@@ -22,24 +23,33 @@ public class BookReceiver {
 	private String bookDir;
 	private String swfDir;
 	private int port;
+	private boolean flag = false;
 	
 	private ServerSocket server;
 	
 	public void startup(){
-		try {
-			server = new ServerSocket(port);
-			while(true){
-				new ReceiverThread(server.accept()).start();
+		if(flag == true)return;
+		new Thread(){
+			public void run(){
+				try {
+					flag = true;
+					server = new ServerSocket(port);
+					while(flag){
+						new ReceiverThread(server.accept()).start();
+					}
+				} catch (SocketException se) {
+//					se.printStackTrace();
+				} catch (IOException ie) {
+					ie.printStackTrace();
+				}
 			}
-		} catch (SocketException se) {
-			se.printStackTrace();
-		} catch (IOException ie) {
-			ie.printStackTrace();
-		}
+		}.start();
 	}
 	
 	public void shutdown(){
+		if(flag == false)return;
 		try {
+			flag = false;
 			server.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -62,6 +72,12 @@ public class BookReceiver {
 				ois = new ObjectInputStream(socket.getInputStream());
 				os = socket.getOutputStream();
 				Book book = (Book)ois.readObject();
+				if(bookDao.listBook(book.getName(), book.getAuthor(), book.getCode(), book.getBookConcern(), book.getDesc(),null, 0,2).size()==0){
+					os.write(1);
+				}else{
+					os.write(2);
+					return;
+				}
 				Long size = (Long)ois.readObject();
 				System.out.println("文件大小:"+size);
 				if(size != -1){
@@ -172,6 +188,10 @@ public class BookReceiver {
 		this.port = port;
 	}
 
+	public boolean isFlag() {
+		return flag;
+	}
+
 	public static void main(String[] args){
 		BookReceiver receiver = new BookReceiver();
 		receiver.setPort(9527);
@@ -185,7 +205,7 @@ public class BookReceiver {
 			public int getTotal(String name, String author, String code,String bookConcern, String desc, Integer typeId) {return 0;}
 			public List<Book> listBook(int start, int size) {return null;}
 			public List<Book> listBook(int start, int size, Type type) {return null;}
-			public List<Book> listBook(String name, String author, String code,	String bookConcern, String desc, Integer typeId, int start,int size) {return null;}
+			public List<Book> listBook(String name, String author, String code,	String bookConcern, String desc, Integer typeId, int start,int size) {return Collections.EMPTY_LIST;}
 			public void save(Book book) {
 				System.out.println(book.getName());
 			}

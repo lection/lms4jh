@@ -38,7 +38,7 @@
 	<li><a href="book_add.action">添加图书</a></li>
 	<li><a href="stu_manager.action">学员管理</a></li>
 	<li><a href="logList.action">查看日志</a></li>
-	<li><a href="manager_logout.action">退出</a></li>
+	<li><a href="bookpass_manager.action">图书传递</a></li>
 </ul>
 </div>
 <div id="ot"></div>

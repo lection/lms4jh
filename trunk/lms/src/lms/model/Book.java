@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 public class Book implements Serializable{
+	private static final long serialVersionUID = -940118617769052325L;
 	public static final int ONLY_READ = 1;
 	public static final int CAN_DOWNLOAD = 2;
 	

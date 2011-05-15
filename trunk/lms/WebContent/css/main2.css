@@ -132,9 +132,9 @@ img {
 }
 
 #footer {
-  float:left;
+  float:right;
   width: 570px;
-  margin: 5px 0px 20px 181px;
+  margin: 5px 26px 20px 0px;
   padding: 10px;
   background-color: #FFF;
   border: 1px solid #DDD;

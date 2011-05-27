@@ -7,15 +7,23 @@
 <head>
 <title>中华圣道神学院图书馆</title>
 <link rel="stylesheet" type="text/css" href="css/main2.css"/>
+<link rel="stylesheet" type="text/css" href="css/tipTip.css"/>
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/jquery-ui.js"></script>
 <script type="text/javascript" src="js/lms_page.js"></script>
+<script type="text/javascript" src="js/jquery.tipTip.minified.js"></script>
 <script>
 $(function(){
 	lmsPageUtil.url="lms_listBook.action";
 	lmsPageUtil.find_url="lms_findBook.action";
 	lmsPageUtil.find_form_elements=$("#book_find_form > input,#book_find_form > select");
 	$("#find_book_button").click(function(){lmsPageUtil.find_commit();});
+	$("#book_find_form").keypress(function(e){
+		if(e.which == 13){
+			lmsPageUtil.find_commit();
+		}
+	});
+	$(".bookTip").tipTip();
 });
 function fn_findByType(id){
 	lmsPageUtil.url="lms_listBookByType.action";
@@ -49,13 +57,19 @@ function fn_can_download(bid){
 	});
 }
 </script>
+<style type="text/css">
+	.bookTip{
+		cursor: pointer;
+		color: black;
+	}
+</style>
 </head>
 <body>
 	<div id="main">
 		<div id="header">
 			<div id="title">
 			  <div class="title"><a href="<%=request.getContextPath() %>">中华圣道神学院图书馆</a></div>
-			  <div class="subtitle">English Name</div>
+			  <div class="subtitle">Library Manager System</div>
 			</div>
 			
 		</div>
@@ -94,6 +108,8 @@ function fn_can_download(bid){
 			</select><br/>
 			作者<br/>
 			<input type="text" name="book.author" value="<s:property value="book.author"/>"/><br/>
+			编号<br/>
+			<input type="text" name="book.code" value="<s:property value="book.code"/>"/><br/>
 			出版社<br/>
 			<input type="text" size="15" name="book.bookConcern" value="<s:property value="book.bookConcern"/>"/><br/>
 			其他关键字<br/>
@@ -109,7 +125,7 @@ function fn_can_download(bid){
 		</div>
 		<div id="footer">
 		  <div>中华圣道神学院图书馆&nbsp;&nbsp;<a href="manager_manager.action">管理后台</a></div>
-		  <div>English Name</div>
+		  <div>Library Manager System</div>
 		</div>
 		<div>&nbsp;</div>
 	</div>

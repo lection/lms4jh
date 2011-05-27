@@ -49,13 +49,15 @@
     		<td></td>
     	</tr>
     	<tr>
-    		<td valign="top" id="content_td"></td>
+    		<td valign="top" id="content_td">
+    			如不能正常浏览，请下载FlashPlayer。<a href="flash_player_10.zip">点击下载</a>
+    		</td>
     		<td>
-    		<div style="width:120px;height:450px; overflow:scroll; border:1px solid;overflow-x:hidden;border: 0px;">
-    			<ul style="list-style: none;">
-    				<s:property value="@util.BookSegToStringUtil@toLiTags(book)" escape="false"/>
-    			</ul>
-    		</div>
+	    		<div style="width:120px;height:450px; overflow:scroll; border:1px solid;overflow-x:hidden;border: 0px;">
+	    			<ul style="list-style: none;">
+	    				<s:property value="@util.BookSegToStringUtil@toLiTags(book)" escape="false"/>
+	    			</ul>
+	    		</div>
     		</td>
     	</tr>
     </table>

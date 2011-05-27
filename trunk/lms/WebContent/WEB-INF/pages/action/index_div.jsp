@@ -21,7 +21,13 @@
         <TBODY>
         <s:iterator value="page.content" var="b">
         	<tr>
-        		<td><s:property value="#b.name"/></td>
+        		<td><a class="bookTip" title="
+        			编码:<s:property value="code"/><br/>
+        			译者:<s:property value="translator"/><br/>
+        			页数:<s:property value="pages"/><br/>
+        			出版日期:<s:date name="bookDate" format="yyyy-MM-dd"/><br/>
+        			简介:<s:property value="desc"/><br/>
+        		"><s:property value="#b.name"/></a></td>
         		<td><s:property value="#b.author"/></td>
         		<td><s:property value="#b.bookConcern"/></td>
         		<s:if test="isLogin">

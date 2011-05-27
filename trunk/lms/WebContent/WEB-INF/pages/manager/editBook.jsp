@@ -127,8 +127,7 @@
 				<td><textarea cols="30" rows="3" name="book.desc"><s:property value="book.desc"/></textarea></td>
 			</tr>
 			<tr>
-				<td><input type="submit" value="添加"/></td>
-				<td><input type="reset" value="重置"/></td>
+				<td colspan="2"><input type="submit" value="修改"/></td>
 			</tr>
 		</tbody>
 		<tfoot></tfoot>

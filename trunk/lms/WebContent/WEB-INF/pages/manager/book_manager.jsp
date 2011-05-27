@@ -10,6 +10,11 @@ $(function(){
 	lmsPageUtil.url="_book_list.action";
 	lmsPageUtil.find_url="_book_find.action";
 	lmsPageUtil.find_form_elements=$("#book_find_form > input,#book_find_form > select");
+	$("#book_find_form").keypress(function(e){
+		if(e.which == 13){
+			lmsPageUtil.find_commit();
+		}
+	});
 });
 function lms_del(id,page){
 	if(confirm("确认删除这本图书吗？")){

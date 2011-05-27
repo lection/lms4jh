@@ -117,40 +117,40 @@
 		<thead></thead>
 		<tbody>
 			<tr>
-				<td width="35%">书籍名称</td>
-				<td width="65%"><input id="book_name" name="book.name" type="text" size="30"/></td>
+				<td width="22%">书籍名称</td>
+				<td width="70%"><input id="book_name" name="book.name" type="text" size="60"/></td>
 			</tr>
 			<tr>
 				<td>作者</td>
-				<td><input name="book.author" type="text" size="30"/></td>
+				<td><input name="book.author" type="text" size="60"/></td>
 			</tr>
 			<tr>
 				<td>译者</td>
-				<td><input name="book.translator" type="text" size="30"/></td>
+				<td><input name="book.translator" type="text" size="60"/></td>
 			</tr>
 			<tr>
 				<td>页数</td>
-				<td><input name="book.pages" id="book_pages" type="text" size="30"/></td>
+				<td><input name="book.pages" id="book_pages" type="text" size="60"/></td>
 			</tr>
 			<tr>
 				<td>书籍编码</td>
-				<td><input name="book.code" type="text" size="30"/></td>
+				<td><input name="book.code" type="text" size="60"/></td>
 			</tr>
 			<tr>
 				<td>出版社</td>
-				<td><input name="book.bookConcern" type="text" size="30"/></td>
+				<td><input name="book.bookConcern" type="text" size="60"/></td>
 			</tr>
 			<tr>
 				<td>出版日期</td>
-				<td><input id="datepicker" name="date" type="text" size="25"/></td>
+				<td><input id="datepicker" name="date" type="text" size="30"/></td>
 			</tr>
 			<tr>
 				<td>拼音</td>
-				<td><input id="pinyin" style="background-color: silver;" name="book.fullPinYin" type="text" size="15"/></td>
+				<td><input id="pinyin" style="background-color: silver;" name="book.fullPinYin" type="text" size="30"/></td>
 			</tr>
 			<tr>
 				<td>拼音缩写</td>
-				<td><input id="py" style="background-color: silver;" name="book.pinYin" type="text" size="10"/></td>
+				<td><input id="py" style="background-color: silver;" name="book.pinYin" type="text" size="30"/></td>
 			</tr>
 			<tr>
 				<td>是否允许下载</td>
@@ -184,7 +184,7 @@
 			</tr>
 			<tr>
 				<td>简介</td>
-				<td><textarea cols="30" rows="3" name="book.desc"></textarea></td>
+				<td><textarea cols="50" rows="5" name="book.desc" style="width:400px;height: 100px;"></textarea></td>
 			</tr>
 			<tr>
 				<td><input type="button" id="add_btn" value="添加图书"/></td>

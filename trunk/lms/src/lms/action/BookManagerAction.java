@@ -109,6 +109,7 @@ public class BookManagerAction extends ActionSupport{
 			for(int i=0;i<typeValues.length;i++){
 				newTypes[i]=typeDao.loadType(Integer.parseInt(typeValues[i]));
 			}
+			b.setTypes(Arrays.asList(newTypes));
 		}
 		bookDao.update(b);
 		book = b;
